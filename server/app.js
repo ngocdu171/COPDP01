@@ -1,11 +1,19 @@
 const express = require('express')
-const app = express()
-const port = 4000
+const {ApolloServer} = require('apollo-server-express')
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
+const typeDefs = require('./schema/schema')
+const resolvers = require('./resolver/resolver')
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers
 })
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+const app = express()
+
+server.start().then(res => {
+  server.applyMiddleware({app});
+  app.listen({port: 4000}, () => {
+      console.log(`Server ready at http://localhost:4000${server.graphqlPath}`);
+  })
 })

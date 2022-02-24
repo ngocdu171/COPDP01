@@ -1,4 +1,5 @@
 const { apartments } = require("../data/static")
+const Apartment = require("../models/Apartment")
 
 const resolvers = {
   Query: {
@@ -7,7 +8,10 @@ const resolvers = {
   },
 
   Mutation: {
-      createApartment: (parent, args) => args
+      createApartment: async (parent, args) => {
+        const newApartment = new Apartment(args)
+        return await newApartment.save()
+      }
   }
 }
 

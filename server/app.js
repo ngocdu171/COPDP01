@@ -3,6 +3,22 @@ const {ApolloServer} = require('apollo-server-express')
 
 const typeDefs = require('./schema/schema')
 const resolvers = require('./resolver/resolver')
+const mongoose = require('mongoose')
+
+const connectDB = async () => {
+  try {
+    await mongoose.connect('mongodb+srv://BrotherD:conmemay7@cluster0.mf51e.mongodb.net/MyDatabase?retryWrites=true&w=majority', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    })
+    console.log('MongoDB connected');
+  } catch (error) {
+    console.log(error.message)
+    process.exit(1)
+  }
+}
+
+connectDB()
 
 const server = new ApolloServer({
   typeDefs,

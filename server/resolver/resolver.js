@@ -3,7 +3,9 @@ const Apartment = require("../models/Apartment")
 
 const resolvers = {
   Query: {
-    apartments: () => apartments,
+    apartments: async (parent, args, context) => {
+      return await context.mongoDataMethods.getAllItems()
+    },
     apartment: (parent, args) => apartments.find(apartment => apartment.id.toString() === args.id)
   },
 

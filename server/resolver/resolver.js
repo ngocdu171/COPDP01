@@ -10,9 +10,8 @@ const resolvers = {
   },
 
   Mutation: {
-      createApartment: async (parent, args) => {
-        const newApartment = new Apartment(args)
-        return await newApartment.save()
+      createApartment: async (parent, args, {mongoDataMethods}) => {
+        return await mongoDataMethods.createApartment(args)
       }
   }
 }

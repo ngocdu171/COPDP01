@@ -6,12 +6,21 @@ const resolvers = {
     apartments: async (parent, args, context) => {
       return await context.mongoDataMethods.getAllItems()
     },
-    apartment: (parent, args) => apartments.find(apartment => apartment.id.toString() === args.id)
+    apartment: async (parent, args, {mongoDataMethods}) => {
+      return await mongoDataMethods.getItemById(args)
+    }
   },
 
   Mutation: {
       createApartment: async (parent, args, {mongoDataMethods}) => {
         return await mongoDataMethods.createApartment(args)
+      },
+      // deleteApartment: (parent, args) => {
+      //   Apartment.findByIdAndRemove({ _id: args.id})
+      //   return true
+      // }
+      updateVacant: async (parent, {id, park}, {mongoDataMethods}) => {
+        return await mongoDataMethods.updateVacant(id, park)
       }
   }
 }

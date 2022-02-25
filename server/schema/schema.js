@@ -37,8 +37,8 @@ const typeDefs = gql`
       balcony: String
       park: Int
     ): Apartment
-    updateVacant(id: String park: Int): Apartment
-    # deleteApartment(id: String): Boolean
+    updateVacant(id: String vacant: Boolean): Apartment
+    deleteApartment(id: String): Apartment
   }
 `;
 

@@ -15,12 +15,11 @@ const resolvers = {
       createApartment: async (parent, args, {mongoDataMethods}) => {
         return await mongoDataMethods.createApartment(args)
       },
-      // deleteApartment: (parent, args) => {
-      //   Apartment.findByIdAndRemove({ _id: args.id})
-      //   return true
-      // }
-      updateVacant: async (parent, {id, park}, {mongoDataMethods}) => {
-        return await mongoDataMethods.updateVacant(id, park)
+      updateVacant: async (parent, {id, vacant}, {mongoDataMethods}) => {
+        return await mongoDataMethods.updateVacant(id, vacant)
+      },
+      deleteApartment: async (parent, args, {mongoDataMethods}) => {
+        return await mongoDataMethods.deleteApartment(args)
       }
   }
 }

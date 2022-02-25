@@ -9,19 +9,23 @@ const mongoDataMethods = {
         const newApartment = new Apartment(args)
         return await newApartment.save()
     },
-    updateVacant: async (id, park) => await Apartment.findOneAndUpdate(
+    updateVacant: async (id, vacant) => await Apartment.findOneAndUpdate(
         {
             _id: id
         },
         {
             $set: {
-                park
+                vacant
             }
         },
         {
             new: true
         }
-    )
+    ),
+    deleteApartment: async (args) => {
+        const deleteItem = await Apartment.findByIdAndRemove({ _id: args.id})
+        return deleteItem
+    }
 }
 
 module.exports = mongoDataMethods

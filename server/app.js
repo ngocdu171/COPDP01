@@ -1,6 +1,7 @@
 const express = require('express')
 const {ApolloServer} = require('apollo-server-express')
 const mongoose = require('mongoose')
+require("dotenv").config()
 
 const typeDefs = require('./schema/schema')
 const resolvers = require('./resolver/resolver')
@@ -9,7 +10,7 @@ const mongoDataMethods = require('./data/db')
 
 const connectDB = async () => {
   try {
-    await mongoose.connect('mongodb+srv://BrotherD:conmemay7@cluster0.mf51e.mongodb.net/MyDatabase?retryWrites=true&w=majority', {
+    await mongoose.connect(`mongodb+srv://${process.env.DB_USERNAME_DEV}:${process.env.DB_PASSWORD_DEV}@cluster0.mf51e.mongodb.net/MyDatabase?retryWrites=true&w=majority`, {
       useNewUrlParser: true,
       useUnifiedTopology: true
     })
@@ -32,7 +33,8 @@ const app = express()
 
 server.start().then(res => {
   server.applyMiddleware({app});
-  app.listen({port: 4000}, () => {
-      console.log(`Server ready at http://localhost:4000${server.graphqlPath}`);
+  const port = process.env.PORT
+  app.listen(port, () => {
+      console.log(`Server ready at http://localhost:${port}${server.graphqlPath}`);
   })
 })

@@ -2,21 +2,22 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "start": "nodemon app",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node dist/index.js",
+    "server": "nodemon dist/index.js",
+    "start-ts": "ts-node src/index.ts",
+    "server-ts": "nodemon --exec ts-node src/index.ts",
+    "watch": "tsc -w"
   },
   "author": "dupham",
   "license": "ISC",
   "dependencies": {
-    "apollo-server-express": "^3.6.3",
-    "dotenv": "^16.0.0",
-    "express": "^4.17.3",
-    "graphql": "^16.3.0",
-    "mongoose": "^6.2.3",
-    "nodemon": "^2.0.15",
-    "pg": "^8.7.3",
-    "typeorm": "^0.2.44"
+    "pg": "^8.7.3"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.21",
+    "ts-node": "^10.6.0",
+    "typescript": "^4.6.2"
   }
 }

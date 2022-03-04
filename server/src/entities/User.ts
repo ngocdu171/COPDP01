@@ -1,6 +1,6 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
-@Entity() // db table
+@Entity()
 export class User extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number
@@ -15,8 +15,8 @@ export class User extends BaseEntity {
     password!: string
 
     @CreateDateColumn()
-    createdAt: Date
+    createdAt!: string
 
     @UpdateDateColumn()
-    updatedAt: Date
+    updatedAt!: string
 }

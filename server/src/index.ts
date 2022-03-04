@@ -3,6 +3,7 @@ import 'reflect-metadata'
 import express from 'express'
 import { createConnection } from 'typeorm'
 import { User } from './entities/User'
+import { Apartment } from './entities/Apartment'
 
 const main = async () => {
     await createConnection({
@@ -12,7 +13,7 @@ const main = async () => {
         password: process.env.DB_PASSWORD_DEV,
         logging: true,
         synchronize: true,
-        entities: [User]
+        entities: [User, Apartment]
     })
 
     const app = express()

@@ -4,6 +4,7 @@ import { Arg, Mutation, Resolver } from "type-graphql";
 import argon2 from 'argon2'
 import { UserMutationResponse } from "../type/UserMutationResponse";
 import { RegisterInput } from "../type/RegisterInput";
+import { LoginInput } from "../type/LoginInput";
 
 @Resolver()
 export class UserResolver {
@@ -50,6 +51,48 @@ export class UserResolver {
                 user: await User.save(newUser)
             }
             
+        } catch (error) {
+            console.log(error)
+            return {
+                code: 500,
+                success: false,
+                message: `Internal server error ${error.message}`,
+            }
+        }
+    }
+
+    @Mutation(_return => UserMutationResponse)
+    async login(@Arg('loginInput') loginInput: LoginInput) {
+        try {
+            const existingUser = await User.findOne(loginInput.usernameOrEmail.includes('@') ? {email: loginInput.usernameOrEmail} : {username: loginInput.usernameOrEmail})
+            if(!existingUser)
+            return {
+                code: 400,
+                success: false,
+                message: 'User not found',
+                errors: [{
+                    field: 'usernameOrEmail',
+                    message: 'Username or Email incorrect'
+                }]
+            }
+            const passwordValid = await argon2.verify(existingUser.password, loginInput.password)
+            if(!passwordValid)
+            return {
+                code: 400,
+                success: false,
+                message: 'Wrong password',
+                errors: [{
+                    field: 'password',
+                    message: ' Wrong password'
+                }]
+            }
+
+            return {
+                code: 200,
+                success: true,
+                message: 'Login successfully',
+                user : existingUser
+            }
         } catch (error) {
             console.log(error)
             return {

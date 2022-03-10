@@ -86,7 +86,6 @@ export class UserResolver {
                     message: ' Wrong password'
                 }]
             }
-
             return {
                 code: 200,
                 success: true,

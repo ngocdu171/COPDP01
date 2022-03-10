@@ -1,10 +1,11 @@
 import { User } from "../entities/User";
 import { validateRegisterInput } from "../utils/validateRegisterInput";
-import { Arg, Mutation, Resolver } from "type-graphql";
+import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
 import argon2 from 'argon2'
 import { UserMutationResponse } from "../type/UserMutationResponse";
 import { RegisterInput } from "../type/RegisterInput";
 import { LoginInput } from "../type/LoginInput";
+import { Context } from "../type/Context";
 
 @Resolver()
 export class UserResolver {
@@ -62,7 +63,10 @@ export class UserResolver {
     }
 
     @Mutation(_return => UserMutationResponse)
-    async login(@Arg('loginInput') loginInput: LoginInput) {
+    async login(
+        @Arg('loginInput') loginInput: LoginInput,
+        @Ctx() {req}: Context
+    ) {
         try {
             const existingUser = await User.findOne(loginInput.usernameOrEmail.includes('@') ? {email: loginInput.usernameOrEmail} : {username: loginInput.usernameOrEmail})
             if(!existingUser)
@@ -86,6 +90,10 @@ export class UserResolver {
                     message: ' Wrong password'
                 }]
             }
+
+            //create session and return cookie
+            req.session.userId = existingUser.id
+
             return {
                 code: 200,
                 success: true,

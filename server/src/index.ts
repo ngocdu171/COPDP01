@@ -13,6 +13,7 @@ import mongoose from 'mongoose'
 import MongoStore from 'connect-mongo'
 import session from 'express-session'
 import { COOKIE_NAME, __prod__ } from './constants'
+import { Context } from './type/Context'
 
 const main = async () => {
     await createConnection({
@@ -54,6 +55,7 @@ const main = async () => {
 
     const apolloServer = new ApolloServer({
         schema: await buildSchema({resolvers: [HelloResolver, UserResolver], validate: false}),
+        context: ({req, res}): Context => ({req, res}),
         plugins: [ApolloServerPluginLandingPageGraphQLPlayground()]
     })
 
@@ -62,7 +64,7 @@ const main = async () => {
     apolloServer.applyMiddleware({app, cors: false})
 
     const port = process.env.PORT||4000
-    app.listen(port, () => console.log(`Server started on port ${port}. GraphQL server started on localhost:${port}${apolloServer.graphqlPath }`))
+    app.listen(port, () => console.log(`Server started on port ${port}. GraphQL server started on localhost:${port}${apolloServer.graphqlPath}`))
 }
 
 main().catch(error => console.log(error))

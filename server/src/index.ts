@@ -14,6 +14,7 @@ import MongoStore from 'connect-mongo'
 import session from 'express-session'
 import { COOKIE_NAME, __prod__ } from './constants'
 import { Context } from './type/Context'
+import { ApartmentResolver } from './resolvers/apartment'
 
 const main = async () => {
     await createConnection({
@@ -33,8 +34,7 @@ const main = async () => {
     await mongoose.connect(mongoUrl,{
         useCreateIndex: true,
         useFindAndModify: false, 
-        useNewUrlParser: true,
-        useUnifiedTopology: true 
+        useNewUrlParser: true 
      })
     
     console.log('MongoDB connected');
@@ -54,7 +54,7 @@ const main = async () => {
       }));
 
     const apolloServer = new ApolloServer({
-        schema: await buildSchema({resolvers: [HelloResolver, UserResolver], validate: false}),
+        schema: await buildSchema({resolvers: [HelloResolver, UserResolver, ApartmentResolver], validate: false}),
         context: ({req, res}): Context => ({req, res}),
         plugins: [ApolloServerPluginLandingPageGraphQLPlayground()]
     })

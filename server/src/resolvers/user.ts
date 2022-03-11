@@ -124,16 +124,5 @@ export class UserResolver {
             })
         })
     }
-    @Mutation(_return => Boolean)
-    test( @Arg('input1') input1: string ) {
-        // let tam = false;
-        // if(!input1) return tam = false
-        // return tam = true
-        return new Promise((resolve, _reject) => {
-            if(!input1) {
-                resolve(false)
-            }
-            resolve(true)
-        })
-    }
+    
 }

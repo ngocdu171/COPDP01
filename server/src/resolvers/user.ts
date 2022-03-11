@@ -10,7 +10,7 @@ import { COOKIE_NAME } from "../constants";
 
 @Resolver()
 export class UserResolver {
-    @Mutation(_returns => UserMutationResponse, {nullable: true})
+    @Mutation(_return => UserMutationResponse, {nullable: true})
     async register(
         @Arg('registerInput') registerInput: RegisterInput,
         @Ctx() {req} :Context
@@ -48,10 +48,10 @@ export class UserResolver {
                 email
             })
 
-            newUser = await User.save(newUser)
+            await newUser.save()
 
             req.session.userId = newUser.id
-            
+
             return {
                 code: 200,
                 success: true,

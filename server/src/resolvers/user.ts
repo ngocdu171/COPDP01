@@ -6,6 +6,7 @@ import { UserMutationResponse } from "../type/UserMutationResponse";
 import { RegisterInput } from "../type/RegisterInput";
 import { LoginInput } from "../type/LoginInput";
 import { Context } from "../type/Context";
+import { COOKIE_NAME } from "../constants";
 
 @Resolver()
 export class UserResolver {
@@ -108,5 +109,31 @@ export class UserResolver {
                 message: `Internal server error ${error.message}`,
             }
         }
+    }
+
+    @Mutation(_return => Boolean)
+    logout(@Ctx() {req, res}: Context) {
+        return new Promise((resolve, _reject) => {
+            res.clearCookie(COOKIE_NAME)
+            req.session.destroy(error => {
+                if (error) {
+                    console.log('Destroying session error: ', error);
+                    resolve(false)
+                }
+                resolve(true)
+            })
+        })
+    }
+    @Mutation(_return => Boolean)
+    test( @Arg('input1') input1: string ) {
+        // let tam = false;
+        // if(!input1) return tam = false
+        // return tam = true
+        return new Promise((resolve, _reject) => {
+            if(!input1) {
+                resolve(false)
+            }
+            resolve(true)
+        })
     }
 }

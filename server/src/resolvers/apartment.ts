@@ -1,12 +1,12 @@
 import { CreateApartmentInput } from "../type/CreateApartmentInput";
-import { Arg, Mutation, Resolver } from "type-graphql";
+import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import { ApartmentMutationResponse } from "../type/ApartmentMutationResponse";
 import { Apartment } from "../entities/Apartment";
 
 @Resolver()
 export class ApartmentResolver {
     @Mutation(_return => ApartmentMutationResponse)
-   async createApartment (@Arg('createApartmentInput') createApartmentInput: CreateApartmentInput) {
+    async createApartment (@Arg('createApartmentInput') createApartmentInput: CreateApartmentInput) {
        try {
            const { name, price, address, floor, vacant, elevator, rooms, year, square, water, balcony, park } = createApartmentInput
            const newApartment = Apartment.create({
@@ -29,4 +29,9 @@ export class ApartmentResolver {
         }
        }
    }
+
+   @Query(_return => [Apartment])
+   async apartment() {
+      return Apartment.find()
+    }
 }

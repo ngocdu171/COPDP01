@@ -51,6 +51,7 @@ export class UserResolver {
             await newUser.save()
 
             req.session.userId = newUser.id
+            // req.session.username = newUser.username
 
             return {
                 code: 200,
@@ -100,6 +101,10 @@ export class UserResolver {
 
             //create session and return cookie
             req.session.userId = existingUser.id
+            // console.log(req.session.userId);
+            // req.session.username = existingUser.username
+            // console.log(req.session.username);
+            
 
             return {
                 code: 200,

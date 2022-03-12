@@ -95,4 +95,22 @@ export class ApartmentResolver {
             }
         }
     }
+
+    @Mutation(_return => ApartmentMutationResponse)
+    async deleteApartment(@Arg('_id', _type => ID) _id: number) {
+        const FindItem = await Apartment.findOne(_id)
+        if(!FindItem)
+        return {
+            code: 400,
+            success: false,
+            message: 'Apartment not found'
+        }
+
+        await Apartment.delete({ id: _id })
+        return {
+            code: 200,
+            success: true,
+            message: 'Apartment deleted successfully'
+        }
+    }
 }

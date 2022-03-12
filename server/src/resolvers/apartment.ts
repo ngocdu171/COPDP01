@@ -1,8 +1,10 @@
 import { CreateApartmentInput } from "../type/CreateApartmentInput";
-import { Arg, ID, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, ID, Mutation, Query, Resolver } from "type-graphql";
 import { ApartmentMutationResponse } from "../type/ApartmentMutationResponse";
 import { Apartment } from "../entities/Apartment";
 import { UpdateApartmentInput } from "../type/UpdateApartmentInput";
+import { Context } from "../type/Context";
+import { AuthenticationError } from "apollo-server-express";
 
 @Resolver()
 export class ApartmentResolver {
@@ -97,7 +99,11 @@ export class ApartmentResolver {
     }
 
     @Mutation(_return => ApartmentMutationResponse)
-    async deleteApartment(@Arg('_id', _type => ID) _id: number) {
+    async deleteApartment(@Arg('_id', _type => ID) _id: number,
+    @Ctx() {req}: Context) {
+        if (!req.session.userId)
+        throw new AuthenticationError('Not authenticated to do this')
+        
         const FindItem = await Apartment.findOne(_id)
         if(!FindItem)
         return {

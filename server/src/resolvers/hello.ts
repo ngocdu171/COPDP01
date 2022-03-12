@@ -7,6 +7,7 @@ export class HelloResolver {
     hello(
         @Ctx() {req}: Context
     ) {
+        // console.log(req.session.username)
         console.log(req.session.userId)
         return 'hello world'
     }

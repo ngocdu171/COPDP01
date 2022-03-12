@@ -34,7 +34,8 @@ const main = async () => {
     await mongoose.connect(mongoUrl,{
         useCreateIndex: true,
         useFindAndModify: false, 
-        useNewUrlParser: true 
+        useNewUrlParser: true,
+        useUnifiedTopology: true
      })
     
     console.log('MongoDB connected');

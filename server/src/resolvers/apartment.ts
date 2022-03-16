@@ -1,5 +1,5 @@
 import { CreateApartmentInput } from "../type/CreateApartmentInput";
-import { checkAuth } from "../middleware/checkAuth";
+import { checkAdmin } from "../middleware/checkAuth";
 import { Arg, ID, Mutation, Query, Resolver, UseMiddleware } from "type-graphql";
 import { ApartmentMutationResponse } from "../type/ApartmentMutationResponse";
 import { Apartment } from "../entities/Apartment";
@@ -29,7 +29,7 @@ export class ApartmentResolver {
     }
 
     @Mutation(_return => ApartmentMutationResponse)
-    @UseMiddleware(checkAuth)
+    @UseMiddleware(checkAdmin)
     async createApartment (@Arg('createApartmentInput') createApartmentInput: CreateApartmentInput) {
         try {
            const { name, price, address, floor, vacant, elevator, rooms, year, square, water, balcony, park } = createApartmentInput
@@ -55,8 +55,8 @@ export class ApartmentResolver {
     }
 
     @Mutation(_return => ApartmentMutationResponse)
-    @UseMiddleware(checkAuth)
-    async updateApartmentInput(
+    @UseMiddleware(checkAdmin)
+    async updateApartment(
         @Arg('updateApartmentInput') updateApartmentInput: UpdateApartmentInput
     ) {
         try {
@@ -100,7 +100,7 @@ export class ApartmentResolver {
     }
 
     @Mutation(_return => ApartmentMutationResponse)
-    @UseMiddleware(checkAuth)
+    @UseMiddleware(checkAdmin)
     async deleteApartment(@Arg('_id', _type => ID) _id: number) {
         
         const FindItem = await Apartment.findOne(_id)

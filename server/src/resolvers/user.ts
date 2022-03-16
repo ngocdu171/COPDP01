@@ -102,6 +102,7 @@ export class UserResolver {
 
             //create session and return cookie
             req.session.userId = existingUser.id
+            req.session.userAdmin = existingUser.admin
             // console.log(req.session.userId);
             // req.session.username = existingUser.username
             // console.log(req.session.username);

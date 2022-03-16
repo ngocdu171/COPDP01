@@ -7,4 +7,11 @@ export const checkAuth: MiddlewareFn<Context> = ({ context: {req} }, next) => {
     throw new AuthenticationError('Not authentication to perform GraphQL operation')
 
     return next()
-  };
+};
+
+export const checkAdmin: MiddlewareFn<Context> = ({ context: {req} }, next) => {
+  if(!req.session.userAdmin)
+  throw new AuthenticationError('Not authentication to perform GraphQL operation')
+
+  return next()
+};

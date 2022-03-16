@@ -2,7 +2,7 @@ require('dotenv').config()
 import 'reflect-metadata'
 import express from 'express'
 import { createConnection } from 'typeorm'
-import { User } from './entities/User'
+import { Tb_user } from './entities/User'
 import { Apartment } from './entities/Apartment'
 import { ApolloServer } from  'apollo-server-express'
 import { buildSchema } from 'type-graphql'
@@ -24,7 +24,7 @@ const main = async () => {
         password: process.env.DB_PASSWORD_DEV,
         logging: true,
         synchronize: true,
-        entities: [User, Apartment]
+        entities: [Tb_user, Apartment]
     })
 
     const app = express()

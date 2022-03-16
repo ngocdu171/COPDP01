@@ -1,4 +1,4 @@
-import { User } from "../entities/User";
+import { Tb_user } from "../entities/User";
 import { Field, ObjectType } from "type-graphql";
 import { IMutationResponse } from "./MutationResponse";
 import { FieldError } from "./FieldError";
@@ -10,7 +10,7 @@ export class UserMutationResponse implements IMutationResponse {
     message?: string;
 
     @Field({nullable: true})
-    user?: User
+    user?: Tb_user
 
     @Field(_type => [FieldError], {nullable:true})
     errors?: FieldError[]

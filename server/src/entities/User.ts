@@ -3,7 +3,7 @@ import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, U
 
 @ObjectType()
 @Entity()
-export class User extends BaseEntity {
+export class Tb_user extends BaseEntity {
     @Field(_type => ID)
     @PrimaryGeneratedColumn()
     id!: number
@@ -15,6 +15,10 @@ export class User extends BaseEntity {
     @Field()
     @Column({ unique: true })
     email!: string
+
+    @Field()
+    @Column()
+    admin: boolean
 
     @Column()
     password!: string

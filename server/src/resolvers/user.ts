@@ -1,4 +1,4 @@
-import { User } from "../entities/User";
+import { Tb_user } from "../entities/User";
 import { validateRegisterInput } from "../utils/validateRegisterInput";
 import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
 import argon2 from 'argon2'
@@ -23,8 +23,8 @@ export class UserResolver {
             ...validateRegisterInputErrors
         }
         try {
-            const { username, email, password } = registerInput
-            const existingUsername = await User.findOne({
+            const { username, email, admin, password } = registerInput
+            const existingUsername = await Tb_user.findOne({
                 where: [{username}, {email}]
             })
             if(existingUsername) 
@@ -42,10 +42,11 @@ export class UserResolver {
 
             const hashPassword = await argon2.hash(password)
 
-            let newUser = User.create({
+            let newUser = Tb_user.create({
                 username,
                 password: hashPassword,
-                email
+                email,
+                admin
             })
 
             await newUser.save()
@@ -76,7 +77,7 @@ export class UserResolver {
         @Ctx() {req}: Context
     ) {
         try {
-            const existingUser = await User.findOne(loginInput.usernameOrEmail.includes('@') ? {email: loginInput.usernameOrEmail} : {username: loginInput.usernameOrEmail})
+            const existingUser = await Tb_user.findOne(loginInput.usernameOrEmail.includes('@') ? {email: loginInput.usernameOrEmail} : {username: loginInput.usernameOrEmail})
             if(!existingUser)
             return {
                 code: 400,

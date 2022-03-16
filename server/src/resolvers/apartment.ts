@@ -1,10 +1,9 @@
 import { CreateApartmentInput } from "../type/CreateApartmentInput";
-import { Arg, Ctx, ID, Mutation, Query, Resolver } from "type-graphql";
+import { checkAuth } from "../middleware/checkAuth";
+import { Arg, ID, Mutation, Query, Resolver, UseMiddleware } from "type-graphql";
 import { ApartmentMutationResponse } from "../type/ApartmentMutationResponse";
 import { Apartment } from "../entities/Apartment";
 import { UpdateApartmentInput } from "../type/UpdateApartmentInput";
-import { Context } from "../type/Context";
-import { AuthenticationError } from "apollo-server-express";
 
 @Resolver()
 export class ApartmentResolver {
@@ -30,6 +29,7 @@ export class ApartmentResolver {
     }
 
     @Mutation(_return => ApartmentMutationResponse)
+    @UseMiddleware(checkAuth)
     async createApartment (@Arg('createApartmentInput') createApartmentInput: CreateApartmentInput) {
         try {
            const { name, price, address, floor, vacant, elevator, rooms, year, square, water, balcony, park } = createApartmentInput
@@ -55,6 +55,7 @@ export class ApartmentResolver {
     }
 
     @Mutation(_return => ApartmentMutationResponse)
+    @UseMiddleware(checkAuth)
     async updateApartmentInput(
         @Arg('updateApartmentInput') updateApartmentInput: UpdateApartmentInput
     ) {
@@ -99,10 +100,8 @@ export class ApartmentResolver {
     }
 
     @Mutation(_return => ApartmentMutationResponse)
-    async deleteApartment(@Arg('_id', _type => ID) _id: number,
-    @Ctx() {req}: Context) {
-        if (!req.session.userId)
-        throw new AuthenticationError('Not authenticated to do this')
+    @UseMiddleware(checkAuth)
+    async deleteApartment(@Arg('_id', _type => ID) _id: number) {
         
         const FindItem = await Apartment.findOne(_id)
         if(!FindItem)

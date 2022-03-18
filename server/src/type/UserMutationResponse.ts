@@ -1,7 +1,7 @@
-import { Tb_user } from "../entities/User";
 import { Field, ObjectType } from "type-graphql";
 import { IMutationResponse } from "./MutationResponse";
 import { FieldError } from "./FieldError";
+import { Tb_user } from "../entities/Users";
 
 @ObjectType({implements: IMutationResponse})
 export class UserMutationResponse implements IMutationResponse {

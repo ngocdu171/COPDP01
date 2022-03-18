@@ -1,4 +1,3 @@
-import { Tb_user } from "../entities/User";
 import { validateRegisterInput } from "../utils/validateRegisterInput";
 import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
 import argon2 from 'argon2'
@@ -7,6 +6,7 @@ import { RegisterInput } from "../type/RegisterInput";
 import { LoginInput } from "../type/LoginInput";
 import { Context } from "../type/Context";
 import { COOKIE_NAME } from "../constants";
+import { Tb_user } from "../entities/Users";
 
 @Resolver()
 export class UserResolver {

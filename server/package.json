@@ -30,9 +30,10 @@
     "express-session": "^1.17.2",
     "graphql": "15.3.0",
     "mongoose": "5.13.5",
+    "nodemon": "^2.0.15",
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.1.1",
-    "typeorm": "^0.3.0"
+    "typeorm": "0.2.43"
   }
 }

@@ -1,7 +1,6 @@
 require('dotenv').config()
 import 'reflect-metadata'
 import express from 'express'
-import { createConnection } from 'typeorm'
 import { ApolloServer } from  'apollo-server-express'
 import { buildSchema } from 'type-graphql'
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core'
@@ -14,6 +13,7 @@ import { Context } from './type/Context'
 import { ApartmentResolver } from './resolvers/apartment'
 import { Tb_user } from './entities/Users'
 import { Apartment } from './entities/Apartments'
+import { createConnection } from 'typeorm'
 
 const main = async () => {
     await createConnection({

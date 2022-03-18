@@ -2,8 +2,8 @@ import { CreateApartmentInput } from "../type/CreateApartmentInput";
 import { checkAdmin } from "../middleware/checkAuth";
 import { Arg, ID, Mutation, Query, Resolver, UseMiddleware } from "type-graphql";
 import { ApartmentMutationResponse } from "../type/ApartmentMutationResponse";
-import { Apartment } from "../entities/Apartment";
 import { UpdateApartmentInput } from "../type/UpdateApartmentInput";
+import { Apartment } from "../entities/Apartments";
 
 @Resolver()
 export class ApartmentResolver {
@@ -18,9 +18,9 @@ export class ApartmentResolver {
     }
 
     @Query(_return => Apartment, {nullable: true})
-    async apartment(@Arg('_id', _type => ID) _id: number) {
+    async apartment(@Arg('id', _type => ID) id: number) {
         try {
-            const FindItem = await Apartment.findOne(_id)
+            const FindItem = await Apartment.findOne(id)
             return FindItem
         } catch (error) {
             console.log(error)

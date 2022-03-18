@@ -1,7 +1,7 @@
+import Register from "./register"
+
 const Index = () => (
-  <h1>
-    welcome to my application
-  </h1>
+  <Register/>
 )
 
 export default Index

@@ -2,12 +2,13 @@ import {
   Box,
   Button,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Input,
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
-import { Form, Formik } from "formik";
+import { Field, Form, Formik } from "formik";
 import { useState } from "react";
 import InputField from "../components/InputField";
 import Wrapper from "../components/Wrapper";
@@ -15,6 +16,7 @@ import Wrapper from "../components/Wrapper";
 const Register = () => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(!show);
+
   return (
     <Wrapper>
       <Formik
@@ -23,46 +25,60 @@ const Register = () => {
       >
         {({}) => (
           <Form>
-            <FormControl>
               <InputField
                 name="username"
                 label="Username"
                 placeholder="Username"
               />
-              <InputField
-                name="password"
-                label="Password"
-                placeholder="Password"
-              />
-              <Button type="submit" colorScheme='blue'>Register</Button>
-              {/* <FormLabel htmlFor="username">Username</FormLabel>
-              <Input
-                id="username"
-                placeholder="Username"
-                value={values.username}
-                onChange={handleChange}
-              />
-              <FormLabel htmlFor="password">Password</FormLabel>
-              <InputGroup>
-                <Input
-                  id="password"
+              <Box mt={4}>
+                <InputGroup>
+                <InputField
+                  name="password"
+                  label="Password"
                   placeholder="Password"
-                  type={show ? "text" : "password"}
-                  value={values.password}
-                  onChange={handleChange}
+                  type={show ? 'text' : 'password'}
                 />
+
                 <InputRightElement>
-                  <Button onClick={handleShow}>{show ? "Hide" : "Show"}</Button>
+                  <Button onClick={handleShow}>{show ? 'Hide' : 'Show'}</Button>
                 </InputRightElement>
               </InputGroup>
-              <Button colorScheme="blue" type="submit">
-                Button
-              </Button> */}
-            </FormControl>
+              </Box>
+
+              <Button type="submit" colorScheme='blue' mt={4}>Register</Button>
+              
           </Form>
         )}
       </Formik>
     </Wrapper>
+
+     
+    // <Box maxW='400px' w='100%' mt={10} mx='auto'>
+    //   <Formik initialValues={{username: '', password: ''}} onSubmit={(values) => {
+    //       console.log(values)
+    //     }}
+    //   >
+    //     {({values, handleChange, errors}) => (
+    //       <Form>
+    //           <FormControl isRequired>
+    //           <FormLabel htmlFor="username">Username</FormLabel>
+    //           <Input id="username" placeholder="Username" value={values.username} onChange={handleChange}/>
+    //           {errors && <FormErrorMessage>{errors}</FormErrorMessage>}
+    //         </FormControl>
+
+    //         <FormControl isRequired>
+    //           <FormLabel htmlFor="password">Password</FormLabel>
+    //           <InputGroup>
+    //             <Input id="password" placeholder="Password" type={show ? 'text' : 'password'} value={values.password} onChange={handleChange} />
+    //             {errors && <FormErrorMessage>{errors}</FormErrorMessage>}
+    //             <InputRightElement><Button onClick={handleShow}>{show ? 'Hide' : 'Show'}</Button></InputRightElement>
+    //           </InputGroup>
+    //         </FormControl>
+    //         <Button colorScheme='blue' type="submit">Button</Button>
+    //       </Form>
+    //     )}
+    //   </Formik>
+    // </Box>
     
   );
 };

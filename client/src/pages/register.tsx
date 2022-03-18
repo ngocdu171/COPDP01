@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { useState } from "react";
+import InputField from "../components/InputField";
 import Wrapper from "../components/Wrapper";
 
 const Register = () => {
@@ -20,10 +21,21 @@ const Register = () => {
       initialValues={{ username: "", password: "" }}
       onSubmit={(values) => console.log(values)}
       >
-        {({ values, handleChange }) => (
+        {({}) => (
           <Form>
             <FormControl>
-              <FormLabel htmlFor="username">Username</FormLabel>
+              <InputField
+                name="username"
+                label="Username"
+                placeholder="Username"
+              />
+              <InputField
+                name="password"
+                label="Password"
+                placeholder="Password"
+              />
+              <Button type="submit" colorScheme='blue'>Register</Button>
+              {/* <FormLabel htmlFor="username">Username</FormLabel>
               <Input
                 id="username"
                 placeholder="Username"
@@ -45,7 +57,7 @@ const Register = () => {
               </InputGroup>
               <Button colorScheme="blue" type="submit">
                 Button
-              </Button>
+              </Button> */}
             </FormControl>
           </Form>
         )}

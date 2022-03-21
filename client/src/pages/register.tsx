@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Checkbox,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -13,6 +14,10 @@ import { useState } from "react";
 import InputField from "../components/InputField";
 import Wrapper from "../components/Wrapper";
 
+import { registerMutation } from "../api/mutations";
+import { useMutation } from "@apollo/client";
+import { valueToPercent } from "@chakra-ui/utils";
+
 const Register = () => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(!show);
@@ -20,16 +25,23 @@ const Register = () => {
   return (
     <Wrapper>
       <Formik
-      initialValues={{ username: "", password: "" }}
+      initialValues={{ username: "", email: "", password: "", admin: "false" }}
       onSubmit={(values) => console.log(values)}
       >
-        {({}) => (
+        {({values}) => (
           <Form>
               <InputField
                 name="username"
                 label="Username"
                 placeholder="Username"
               />
+              <Box>
+                <InputField
+                  name="email"
+                  label="Email"
+                  placeholder="Email"
+                />
+              </Box>
               <Box mt={4}>
                 <InputGroup>
                 <InputField
@@ -45,6 +57,9 @@ const Register = () => {
               </InputGroup>
               </Box>
 
+              <label><Field type="Checkbox" name="admin" value={values.admin} />Admin</label>
+              {/* <Checkbox value={values.admin} colorScheme={'red'}>Admin</Checkbox> */}
+
               <Button type="submit" colorScheme='blue' mt={4}>Register</Button>
               
           </Form>
@@ -54,7 +69,7 @@ const Register = () => {
 
      
     // <Box maxW='400px' w='100%' mt={10} mx='auto'>
-    //   <Formik initialValues={{username: '', password: ''}} onSubmit={(values) => {
+    //   <Formik initialValues={{username: '',email: '', password: '', admin: false}} onSubmit={(values) => {
     //       console.log(values)
     //     }}
     //   >
@@ -74,6 +89,10 @@ const Register = () => {
     //             <InputRightElement><Button onClick={handleShow}>{show ? 'Hide' : 'Show'}</Button></InputRightElement>
     //           </InputGroup>
     //         </FormControl>
+    //         <Input type="checkbox" />
+
+    //         <label><Field type="Checkbox" name="admin" value={values.admin} />Admin</label>
+            
     //         <Button colorScheme='blue' type="submit">Button</Button>
     //       </Form>
     //     )}

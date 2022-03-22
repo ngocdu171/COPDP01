@@ -10,13 +10,16 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import { Field, Form, Formik, FormikHelpers } from "formik";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import InputField from "../components/InputField";
 import Wrapper from "../components/Wrapper";
 
 import { RegisterInput, useRegisterMutation } from "../generated/graphql";
+import { ShowFieldErrors } from "../helpers/ShowFieldErrors";
 
 const Register = () => {
+  const router = useRouter()
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(!show);
   const initialValues: RegisterInput = { username: "", email: "", password: "", admin: false };
@@ -30,9 +33,10 @@ const Register = () => {
       }
     })
     if(response.data?.register?.errors) {
-      setErrors({
-        username: 'wrong!'
-      })
+      setErrors(ShowFieldErrors(response.data.register.errors))
+    }
+    else if(response.data?.register?.user) {
+      router.push('/')
     }
     
   };

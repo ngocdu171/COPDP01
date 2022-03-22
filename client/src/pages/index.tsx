@@ -1,7 +1,7 @@
 import Register from "./register"
 
 const Index = () => (
-  <Register/>
+  <p>HOME</p>
 )
 
 export default Index

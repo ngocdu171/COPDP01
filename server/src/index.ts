@@ -14,6 +14,7 @@ import { ApartmentResolver } from './resolvers/apartment'
 import { Tb_user } from './entities/Users'
 import { Apartment } from './entities/Apartments'
 import { createConnection } from 'typeorm'
+import cors from 'cors'
 
 const main = async () => {
     await createConnection({
@@ -27,6 +28,10 @@ const main = async () => {
     })
 
     const app = express()
+    app.use(cors({
+        origin: 'http://localhost:3000',
+        credentials: true
+    }))
 
     //Session/Cookie store
     const mongoUrl = `mongodb+srv://${process.env.SESSION_DB_USERNAME_DEV_PROD}:${process.env.SESSION_DB_PASSWORD_DEV_PROD}@cluster0.bhiaf.mongodb.net/sessionsDB?retryWrites=true&w=majority`

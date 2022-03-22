@@ -9,50 +9,32 @@ import {
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
-import { Field, Form, Formik } from "formik";
+import { Field, Form, Formik, FormikHelpers } from "formik";
 import { useState } from "react";
 import InputField from "../components/InputField";
 import Wrapper from "../components/Wrapper";
 
-import { registerMutation } from "../api/mutations";
-import { useMutation } from "@apollo/client";
+import { RegisterInput, useRegisterMutation } from "../generated/graphql";
 
 const Register = () => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(!show);
-  const initialValues: NewUserInput = {
-    username: "",
-    email: "",
-    password: "",
-    admin: false,
-  };
+  const initialValues: RegisterInput = { username: "", email: "", password: "", admin: false };
 
-  interface UserMutationResponse {
-    code: number;
-    success: string;
-    message: string;
-    user: string;
-    error: string;
-  }
+  const [registerUser, { loading: _register, data, error }] = useRegisterMutation()
 
-  interface NewUserInput {
-    username: string;
-    email: string;
-    admin: boolean;
-    password: string;
-  }
-
-  const [registerUser, { data, error }] = useMutation<
-    { register: UserMutationResponse },
-    { registerInput: NewUserInput }
-  >(registerMutation);
-
-  const onRegisterSubmit = (values: NewUserInput) => {
-    registerUser({
+  const onRegisterSubmit = async (values: RegisterInput, {setErrors}: FormikHelpers<RegisterInput>) => {
+    const response = await registerUser({
       variables: {
         registerInput: values,
-      },
-    });
+      }
+    })
+    if(response.data?.register?.errors) {
+      setErrors({
+        username: 'wrong!'
+      })
+    }
+    
   };
 
   return (

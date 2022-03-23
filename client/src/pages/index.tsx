@@ -1,5 +1,3 @@
-import Register from "./register"
-
 const Index = () => (
   <p>HOME</p>
 )

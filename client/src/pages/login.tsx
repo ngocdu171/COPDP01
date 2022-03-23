@@ -1,11 +1,11 @@
 import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  InputGroup,
-  InputRightElement,
-  Spacer,
+    Box,
+    Button,
+    Center,
+    Flex,
+    InputGroup,
+    InputRightElement,
+    Spacer
 } from "@chakra-ui/react";
 import { Field, Form, Formik, FormikHelpers } from "formik";
 import Link from "next/link";
@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import InputField from "../components/InputField";
 import Wrapper from "../components/Wrapper";
-import { RegisterInput, useRegisterMutation } from "../generated/graphql";
+import { LoginInput, useLoginMutation } from "../generated/graphql";
 import { ShowFieldErrors } from "../helpers/ShowFieldErrors";
 
 const Login = () => {
@@ -46,17 +46,17 @@ const Login = () => {
 
   return (
     <Wrapper>
-      {error && <p>Logined failure. Internal server error</p>}
+      {error && <p>failed to Login . Internal server error</p>}
       {data && data.login.success && (
-        <p>Registered succesfully {JSON.stringify(data)}</p>
+        <p>Logged in succesfully {JSON.stringify(data)}</p>
       )}
       <Formik initialValues={initialValues} onSubmit={onLoginSubmit}>
-        {({ values, isSubmitting }) => (
+        {({ isSubmitting }) => (
           <Form>
             <InputField
-              name="username"
-              label="Username"
-              placeholder="Username"
+              name="usernameOrEmail"
+              label="Username or Email"
+              placeholder="Username or Email"
             />
             <Box mt={4}>
               <InputGroup>
@@ -74,14 +74,13 @@ const Login = () => {
 
             <Flex mt={4}>
               <Box>
-                <label>
-                  <Field type="Checkbox" name="admin" value={values.admin} />
-                  Admin
-                </label>
+                <p>
+                  Have already an account?
+                </p>
               </Box>
               <Spacer />
               <Box>
-                <Link href="/login">Login Here</Link>
+                <Link href="/register">Register Here</Link>
               </Box>
             </Flex>
 

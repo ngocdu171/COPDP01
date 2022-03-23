@@ -40,7 +40,7 @@ const Register = () => {
 
   return (
       <Wrapper>
-        {error && <p>Registered failure</p>}
+        {error && <p>Registered failure. Internal server error</p>}
         {data && data.register.success && <p>Registered succesfully {JSON.stringify(data)}</p>}
         <Formik initialValues={initialValues} onSubmit={onRegisterSubmit}>
           {({ values, isSubmitting }) => (
@@ -75,7 +75,7 @@ const Register = () => {
                   </label>
                 </Box>
                 <Spacer />
-                <Box><Link href="/">Login Here</Link></Box>
+                <Box><Link href="/login">Login Here</Link></Box>
               </Flex>
               
               <Center>

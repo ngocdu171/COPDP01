@@ -7,7 +7,7 @@ interface IWrapperProps {
 
 const Wrapper = ({ children }: IWrapperProps) => {
   return (
-    <Box maxW="400px" w="100%" mt={10} mx="auto">
+    <Box maxW="400px" w="100%" mt={10} mx="auto" border='1px' borderColor='aquamarine' borderRadius='2px' padding='30px'>
       {children}
     </Box>
   );

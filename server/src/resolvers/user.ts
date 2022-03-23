@@ -1,5 +1,5 @@
 import { validateRegisterInput } from "../utils/validateRegisterInput";
-import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
+import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import argon2 from 'argon2'
 import { UserMutationResponse } from "../type/UserMutationResponse";
 import { RegisterInput } from "../type/RegisterInput";
@@ -10,6 +10,13 @@ import { Tb_user } from "../entities/Users";
 
 @Resolver()
 export class UserResolver {
+    @Query(_return => Tb_user,{nullable: true})
+    async checklogin(@Ctx() {req}: Context) {
+        if(!req.session.userId) return null
+        const userFind = await Tb_user.findOne(req.session.userId)
+        return userFind
+    }
+
     @Mutation(_return => UserMutationResponse, {nullable: true})
     async register(
         @Arg('registerInput') registerInput: RegisterInput,

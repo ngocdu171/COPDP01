@@ -1,0 +1,7 @@
+query CheckLogin {
+  checklogin {
+    id
+    username
+    email
+  }
+}

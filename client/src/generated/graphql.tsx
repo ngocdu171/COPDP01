@@ -116,6 +116,7 @@ export type Query = {
   __typename?: 'Query';
   apartment?: Maybe<Apartment>;
   apartments?: Maybe<Array<Apartment>>;
+  checklogin?: Maybe<Tb_User>;
 };
 
 
@@ -178,6 +179,11 @@ export type RegisterMutationVariables = Exact<{
 
 
 export type RegisterMutation = { __typename?: 'Mutation', register?: { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null, user?: { __typename?: 'Tb_user', id: string, username: string, email: string } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } | null };
+
+export type CheckLoginQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CheckLoginQuery = { __typename?: 'Query', checklogin?: { __typename?: 'Tb_user', id: string, username: string, email: string } | null };
 
 
 export const LoginDocument = gql`
@@ -269,3 +275,39 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const CheckLoginDocument = gql`
+    query CheckLogin {
+  checklogin {
+    id
+    username
+    email
+  }
+}
+    `;
+
+/**
+ * __useCheckLoginQuery__
+ *
+ * To run a query within a React component, call `useCheckLoginQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCheckLoginQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCheckLoginQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCheckLoginQuery(baseOptions?: Apollo.QueryHookOptions<CheckLoginQuery, CheckLoginQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CheckLoginQuery, CheckLoginQueryVariables>(CheckLoginDocument, options);
+      }
+export function useCheckLoginLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CheckLoginQuery, CheckLoginQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CheckLoginQuery, CheckLoginQueryVariables>(CheckLoginDocument, options);
+        }
+export type CheckLoginQueryHookResult = ReturnType<typeof useCheckLoginQuery>;
+export type CheckLoginLazyQueryHookResult = ReturnType<typeof useCheckLoginLazyQuery>;
+export type CheckLoginQueryResult = Apollo.QueryResult<CheckLoginQuery, CheckLoginQueryVariables>;

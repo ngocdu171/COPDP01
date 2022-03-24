@@ -25,7 +25,7 @@ const Login = () => {
     password: ""
   };
 
-  const [LoginUser, { loading: _register, data, error }] =
+  const [LoginUser, { loading: _login, data, error }] =
     useLoginMutation();
 
   const onLoginSubmit = async (

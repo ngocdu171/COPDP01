@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import InputField from "../components/InputField";
 import Wrapper from "../components/Wrapper";
-import { LoginInput, useLoginMutation } from "../generated/graphql";
+import { CheckLoginDocument, CheckLoginQuery, LoginInput, useLoginMutation } from "../generated/graphql";
 import { ShowFieldErrors } from "../helpers/ShowFieldErrors";
 
 const Login = () => {
@@ -36,6 +36,27 @@ const Login = () => {
       variables: {
         loginInput: values,
       },
+      update(cache, result) {
+        // const checkloginData = cache.readQuery({query: CheckLoginDocument})
+        // console.log('checkloginData: ', checkloginData);
+        console.log('result: ', result.data);
+
+        if(result.data?.login.success) {
+          cache.writeQuery<CheckLoginQuery>({
+            query: CheckLoginDocument,
+            data: {
+              checklogin: {
+                id: result.data.login.user?.id,
+                email: result.data.login.user?.email,
+                username: result.data.login.user?.username,
+                // id: data?.login.user?.id,
+                // email: data?.login.user?.email,
+                // username: data?.login.user?.username
+              }
+            }
+          })
+        }
+      }
     });
     if (response.data?.login?.errors) {
       setErrors(ShowFieldErrors(response.data.login.errors));

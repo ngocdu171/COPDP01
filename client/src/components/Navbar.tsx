@@ -1,15 +1,16 @@
 import { Box, Button, Flex, Heading } from '@chakra-ui/react'
 import Link from 'next/link'
 import React from 'react'
-import { useCheckLoginQuery } from '../generated/graphql'
+import { CheckLoginDocument, CheckLoginQuery, useCheckLoginQuery, useLogoutMutation } from '../generated/graphql'
 
 const Navbar = () => {
-    const{data, loading, error} = useCheckLoginQuery()
-    console.log(data?.checklogin);
+    const{data, loading: useCheckLoginQueryLoading} = useCheckLoginQuery()
+    // console.log(data?.checklogin);
+    const [logout, {loading: useLogoutMutationLoading}] = useLogoutMutation()
 
     let menuEle
 
-    if(loading) {
+    if(useCheckLoginQueryLoading) {
         menuEle = null
     }
     else if(!data?.checklogin) {
@@ -21,11 +22,20 @@ const Navbar = () => {
         )
     }
     else {
-        menuEle = <Button variant={'ghost'} onClick={HandleLogout}>Logout</Button>
+        menuEle = <Button variant={'ghost'} onClick={HandleLogout} isLoading={useLogoutMutationLoading}>Logout</Button>
     }
     
     function HandleLogout() {
-        alert("Logout!")
+        logout({
+            update(cache, result) {
+                if(result.data?.logout) {
+                    cache.writeQuery<CheckLoginQuery>({
+                        query: CheckLoginDocument,
+                        data: {checklogin: null}
+                    })
+                }
+            }
+        })
     }
   return (
     <Box p={5}>

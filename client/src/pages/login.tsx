@@ -49,9 +49,7 @@ const Login = () => {
                 id: result.data.login.user?.id,
                 email: result.data.login.user?.email,
                 username: result.data.login.user?.username,
-                // id: data?.login.user?.id,
-                // email: data?.login.user?.email,
-                // username: data?.login.user?.username
+                admin: result.data.login.user?.admin
               }
             }
           })

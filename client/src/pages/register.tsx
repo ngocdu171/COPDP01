@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import InputField from "../components/InputField";
 import Wrapper from "../components/Wrapper";
-import { RegisterInput, useRegisterMutation } from "../generated/graphql";
+import { CheckLoginDocument, CheckLoginQuery, RegisterInput, useRegisterMutation } from "../generated/graphql";
 import { ShowFieldErrors } from "../helpers/ShowFieldErrors";
 
 const Register = () => {
@@ -38,6 +38,20 @@ const Register = () => {
       variables: {
         registerInput: values,
       },
+      update(cache, result) {
+        if(result.data?.register?.success) {
+          cache.writeQuery<CheckLoginQuery>({
+            query: CheckLoginDocument,
+            data: {
+              checklogin: {
+                id: result.data.register.user?.id,
+                email: result.data.register.user?.email,
+                username: result.data.register.user?.username
+              }
+            }
+          })
+        }
+      }
     });
     if (response.data?.register?.errors) {
       setErrors(ShowFieldErrors(response.data.register.errors));

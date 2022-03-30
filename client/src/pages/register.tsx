@@ -7,6 +7,7 @@ import {
   InputRightElement,
   Spacer,
   Spinner,
+  useToast,
 } from "@chakra-ui/react";
 import { Field, Form, Formik, FormikHelpers } from "formik";
 import Link from "next/link";
@@ -20,6 +21,7 @@ import { useCheckAuth } from "../utils/useCheckAuth";
 
 const Register = () => {
   const router = useRouter();
+  const toast = useToast();
   const {data: authData, loading: authLoading} = useCheckAuth();
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(!show);
@@ -59,6 +61,14 @@ const Register = () => {
     if (response.data?.register?.errors) {
       setErrors(ShowFieldErrors(response.data.register.errors));
     } else if (response.data?.register?.user) {
+      toast({
+        title: "Hi",
+        description: `${response.data.register.user.username}`,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: 'top-right'
+      })
       router.push("/");
     }
   };
@@ -73,9 +83,6 @@ const Register = () => {
         ) :(
           <Wrapper>
           {error && <p>Registered failure. Internal server error</p>}
-          {data && data.register?.success && (
-            <p>Registered succesfully {JSON.stringify(data)}</p>
-          )}
           <Formik initialValues={initialValues} onSubmit={onRegisterSubmit}>
             {({ values, isSubmitting }) => (
               <Form>

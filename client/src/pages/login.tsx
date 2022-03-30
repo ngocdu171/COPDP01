@@ -5,7 +5,8 @@ import {
     Flex,
     InputGroup,
     InputRightElement,
-    Spacer
+    Spacer,
+    Spinner
 } from "@chakra-ui/react";
 import { Field, Form, Formik, FormikHelpers } from "formik";
 import Link from "next/link";
@@ -15,9 +16,11 @@ import InputField from "../components/InputField";
 import Wrapper from "../components/Wrapper";
 import { CheckLoginDocument, CheckLoginQuery, LoginInput, useLoginMutation } from "../generated/graphql";
 import { ShowFieldErrors } from "../helpers/ShowFieldErrors";
+import { useCheckAuth } from "../utils/useCheckAuth";
 
 const Login = () => {
   const router = useRouter();
+  const {data: authData, loading: authLoading} = useCheckAuth();
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(!show);
   const initialValues: LoginInput = {
@@ -64,59 +67,65 @@ const Login = () => {
   };
 
   return (
-    <Wrapper>
-      {error && <p>failed to Login . Internal server error</p>}
-      {data && data.login.success && (
-        <p>Logged in succesfully {JSON.stringify(data)}</p>
-      )}
-      <Formik initialValues={initialValues} onSubmit={onLoginSubmit}>
-        {({ isSubmitting }) => (
-          <Form>
-            <InputField
-              name="usernameOrEmail"
-              label="Username or Email"
-              placeholder="Username or Email"
-            />
-            <Box mt={4}>
-              <InputGroup>
+    <>
+      {
+        authLoading || (!authLoading && authData?.checklogin) ? <Spinner /> :
+        <Wrapper>
+          {error && <p>failed to Login . Internal server error</p>}
+          {data && data.login.success && (
+            <p>Logged in succesfully {JSON.stringify(data)}</p>
+          )}
+          <Formik initialValues={initialValues} onSubmit={onLoginSubmit}>
+            {({ isSubmitting }) => (
+              <Form>
                 <InputField
-                  name="password"
-                  label="Password"
-                  placeholder="Password"
-                  type={show ? "text" : "password"}
+                  name="usernameOrEmail"
+                  label="Username or Email"
+                  placeholder="Username or Email"
                 />
-                <InputRightElement mt={8}>
-                  <Button onClick={handleShow}>{show ? "Hide" : "Show"}</Button>
-                </InputRightElement>
-              </InputGroup>
-            </Box>
+                <Box mt={4}>
+                  <InputGroup>
+                    <InputField
+                      name="password"
+                      label="Password"
+                      placeholder="Password"
+                      type={show ? "text" : "password"}
+                    />
+                    <InputRightElement mt={8}>
+                      <Button onClick={handleShow}>{show ? "Hide" : "Show"}</Button>
+                    </InputRightElement>
+                  </InputGroup>
+                </Box>
 
-            <Flex mt={4}>
-              <Box>
-                <p>
-                  Have already an account?
-                </p>
-              </Box>
-              <Spacer />
-              <Box>
-                <Link href="/register">Register Here</Link>
-              </Box>
-            </Flex>
+                <Flex mt={4}>
+                  <Box>
+                    <p>
+                      Have already an account?
+                    </p>
+                  </Box>
+                  <Spacer />
+                  <Box>
+                    <Link href="/register">Register Here</Link>
+                  </Box>
+                </Flex>
 
-            <Center>
-              <Button
-                type="submit"
-                colorScheme="blue"
-                mt={4}
-                isLoading={isSubmitting}
-              >
-                Login
-              </Button>
-            </Center>
-          </Form>
-        )}
-      </Formik>
-    </Wrapper>
+                <Center>
+                  <Button
+                    type="submit"
+                    colorScheme="blue"
+                    mt={4}
+                    isLoading={isSubmitting}
+                  >
+                    Login
+                  </Button>
+                </Center>
+              </Form>
+            )}
+          </Formik>
+        </Wrapper>
+      }
+    </>
+    
   );
 };
 

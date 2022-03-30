@@ -6,7 +6,8 @@ import {
     InputGroup,
     InputRightElement,
     Spacer,
-    Spinner
+    Spinner,
+    useToast
 } from "@chakra-ui/react";
 import { Field, Form, Formik, FormikHelpers } from "formik";
 import Link from "next/link";
@@ -20,6 +21,7 @@ import { useCheckAuth } from "../utils/useCheckAuth";
 
 const Login = () => {
   const router = useRouter();
+  const toast = useToast();
   const {data: authData, loading: authLoading} = useCheckAuth();
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(!show);
@@ -62,6 +64,14 @@ const Login = () => {
     if (response.data?.login?.errors) {
       setErrors(ShowFieldErrors(response.data.login.errors));
     } else if (response.data?.login?.user) {
+      toast({
+        title: "Hi",
+        description: `${response.data.login.user.username}`,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: 'top-right'
+      })
       router.push("/");
     }
   };
@@ -76,9 +86,6 @@ const Login = () => {
         ) :(
           <Wrapper>
             {error && <p>failed to Login . Internal server error</p>}
-            {data && data.login.success && (
-              <p>Logged in succesfully {JSON.stringify(data)}</p>
-            )}
             <Formik initialValues={initialValues} onSubmit={onLoginSubmit}>
               {({ isSubmitting }) => (
                 <Form>

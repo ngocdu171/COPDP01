@@ -6,6 +6,7 @@ import {
   InputGroup,
   InputRightElement,
   Spacer,
+  Spinner,
 } from "@chakra-ui/react";
 import { Field, Form, Formik, FormikHelpers } from "formik";
 import Link from "next/link";
@@ -15,9 +16,11 @@ import InputField from "../components/InputField";
 import Wrapper from "../components/Wrapper";
 import { CheckLoginDocument, CheckLoginQuery, RegisterInput, useRegisterMutation } from "../generated/graphql";
 import { ShowFieldErrors } from "../helpers/ShowFieldErrors";
+import { useCheckAuth } from "../utils/useCheckAuth";
 
 const Register = () => {
   const router = useRouter();
+  const {data: authData, loading: authLoading} = useCheckAuth();
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(!show);
   const initialValues: RegisterInput = {
@@ -61,63 +64,74 @@ const Register = () => {
   };
 
   return (
-    <Wrapper>
-      {error && <p>Registered failure. Internal server error</p>}
-      {data && data.register?.success && (
-        <p>Registered succesfully {JSON.stringify(data)}</p>
-      )}
-      <Formik initialValues={initialValues} onSubmit={onRegisterSubmit}>
-        {({ values, isSubmitting }) => (
-          <Form>
-            <InputField
-              name="username"
-              label="Username"
-              placeholder="Username"
-            />
-            <Box>
-              <InputField name="email" label="Email" placeholder="Email" />
-            </Box>
-            <Box mt={4}>
-              <InputGroup>
+    <>
+      {
+        authLoading || (!authLoading && authData?.checklogin) ? (
+          <Flex justifyContent='center' align='center' minH='100vh'>
+            <Spinner />
+          </Flex>
+        ) :(
+          <Wrapper>
+          {error && <p>Registered failure. Internal server error</p>}
+          {data && data.register?.success && (
+            <p>Registered succesfully {JSON.stringify(data)}</p>
+          )}
+          <Formik initialValues={initialValues} onSubmit={onRegisterSubmit}>
+            {({ values, isSubmitting }) => (
+              <Form>
                 <InputField
-                  name="password"
-                  label="Password"
-                  placeholder="Password"
-                  type={show ? "text" : "password"}
+                  name="username"
+                  label="Username"
+                  placeholder="Username"
                 />
-                <InputRightElement mt={8}>
-                  <Button onClick={handleShow}>{show ? "Hide" : "Show"}</Button>
-                </InputRightElement>
-              </InputGroup>
-            </Box>
+                <Box>
+                  <InputField name="email" label="Email" placeholder="Email" />
+                </Box>
+                <Box mt={4}>
+                  <InputGroup>
+                    <InputField
+                      name="password"
+                      label="Password"
+                      placeholder="Password"
+                      type={show ? "text" : "password"}
+                    />
+                    <InputRightElement mt={8}>
+                      <Button onClick={handleShow}>{show ? "Hide" : "Show"}</Button>
+                    </InputRightElement>
+                  </InputGroup>
+                </Box>
 
-            <Flex mt={4}>
-              <Box>
-                <label>
-                  <Field type="Checkbox" name="admin" value={values.admin} />
-                  Admin
-                </label>
-              </Box>
-              <Spacer />
-              <Box>
-                <Link href="/login">Login Here</Link>
-              </Box>
-            </Flex>
+                <Flex mt={4}>
+                  <Box>
+                    <label>
+                      <Field type="Checkbox" name="admin" value={values.admin} />
+                      Admin
+                    </label>
+                  </Box>
+                  <Spacer />
+                  <Box>
+                    <Link href="/login">Login Here</Link>
+                  </Box>
+                </Flex>
 
-            <Center>
-              <Button
-                type="submit"
-                colorScheme="blue"
-                mt={4}
-                isLoading={isSubmitting}
-              >
-                Register
-              </Button>
-            </Center>
-          </Form>
-        )}
-      </Formik>
-    </Wrapper>
+                <Center>
+                  <Button
+                    type="submit"
+                    colorScheme="blue"
+                    mt={4}
+                    isLoading={isSubmitting}
+                  >
+                    Register
+                  </Button>
+                </Center>
+              </Form>
+            )}
+          </Formik>
+        </Wrapper>
+        )
+      }
+    </>
+    
   );
 };
 

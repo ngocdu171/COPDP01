@@ -69,60 +69,65 @@ const Login = () => {
   return (
     <>
       {
-        authLoading || (!authLoading && authData?.checklogin) ? <Spinner /> :
-        <Wrapper>
-          {error && <p>failed to Login . Internal server error</p>}
-          {data && data.login.success && (
-            <p>Logged in succesfully {JSON.stringify(data)}</p>
-          )}
-          <Formik initialValues={initialValues} onSubmit={onLoginSubmit}>
-            {({ isSubmitting }) => (
-              <Form>
-                <InputField
-                  name="usernameOrEmail"
-                  label="Username or Email"
-                  placeholder="Username or Email"
-                />
-                <Box mt={4}>
-                  <InputGroup>
-                    <InputField
-                      name="password"
-                      label="Password"
-                      placeholder="Password"
-                      type={show ? "text" : "password"}
-                    />
-                    <InputRightElement mt={8}>
-                      <Button onClick={handleShow}>{show ? "Hide" : "Show"}</Button>
-                    </InputRightElement>
-                  </InputGroup>
-                </Box>
-
-                <Flex mt={4}>
-                  <Box>
-                    <p>
-                      Have already an account?
-                    </p>
-                  </Box>
-                  <Spacer />
-                  <Box>
-                    <Link href="/register">Register Here</Link>
-                  </Box>
-                </Flex>
-
-                <Center>
-                  <Button
-                    type="submit"
-                    colorScheme="blue"
-                    mt={4}
-                    isLoading={isSubmitting}
-                  >
-                    Login
-                  </Button>
-                </Center>
-              </Form>
+        authLoading || (!authLoading && authData?.checklogin) ? (
+          <Flex justifyContent='center' align='center' minH='100vh'>
+            <Spinner />
+          </Flex>
+        ) :(
+          <Wrapper>
+            {error && <p>failed to Login . Internal server error</p>}
+            {data && data.login.success && (
+              <p>Logged in succesfully {JSON.stringify(data)}</p>
             )}
-          </Formik>
-        </Wrapper>
+            <Formik initialValues={initialValues} onSubmit={onLoginSubmit}>
+              {({ isSubmitting }) => (
+                <Form>
+                  <InputField
+                    name="usernameOrEmail"
+                    label="Username or Email"
+                    placeholder="Username or Email"
+                  />
+                  <Box mt={4}>
+                    <InputGroup>
+                      <InputField
+                        name="password"
+                        label="Password"
+                        placeholder="Password"
+                        type={show ? "text" : "password"}
+                      />
+                      <InputRightElement mt={8}>
+                        <Button onClick={handleShow}>{show ? "Hide" : "Show"}</Button>
+                      </InputRightElement>
+                    </InputGroup>
+                  </Box>
+
+                  <Flex mt={4}>
+                    <Box>
+                      <p>
+                        Have already an account?
+                      </p>
+                    </Box>
+                    <Spacer />
+                    <Box>
+                      <Link href="/register">Register Here</Link>
+                    </Box>
+                  </Flex>
+
+                  <Center>
+                    <Button
+                      type="submit"
+                      colorScheme="blue"
+                      mt={4}
+                      isLoading={isSubmitting}
+                    >
+                      Login
+                    </Button>
+                  </Center>
+                </Form>
+              )}
+            </Formik>
+          </Wrapper>
+        )
       }
     </>
     

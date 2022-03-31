@@ -6,8 +6,6 @@ import {
   NormalizedCacheObject,
 } from "@apollo/client";
 // import { concatPagination } from '@apollo/client/utilities'
-// import merge from 'deepmerge'
-// import isEqual from 'lodash/isEqual'
 import merge from "deepmerge";
 import { isEqual } from "lodash";
 
@@ -15,7 +13,7 @@ export const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 interface IApolloStateProps {
-  [APOLLO_STATE_PROP_NAME]: NormalizedCacheObject;
+  [APOLLO_STATE_PROP_NAME]?: NormalizedCacheObject;
 }
 
 function createApolloClient() {

@@ -1,13 +1,28 @@
-import Navbar from "../components/Navbar"
-import { GetallApartmentDocument } from "../generated/graphql"
-import { addApolloState, initializeApollo } from "../lib/apolloClient"
+import Navbar from "../components/Navbar";
+import {
+  GetallApartmentDocument,
+  useGetallApartmentQuery,
+} from "../generated/graphql";
+import { addApolloState, initializeApollo } from "../lib/apolloClient";
 
-const Index = () => (
-  <>
-    <Navbar />
-    <p>HOME</p>
-  </>
-)
+const Index = () => {
+  const { data, loading } = useGetallApartmentQuery();
+
+  return (
+    <>
+      <Navbar />
+      {loading ? (
+        "LOADING..."
+      ) : (
+        <ul>
+          {data?.apartments?.map((apartment) => (
+            <li>{apartment.name}</li>
+          ))}
+        </ul>
+      )}
+    </>
+  );
+};
 
 export const getStaticProps = async () => {
   const apolloClient = initializeApollo()
@@ -21,4 +36,4 @@ export const getStaticProps = async () => {
   })
 }
 
-export default Index
+export default Index;

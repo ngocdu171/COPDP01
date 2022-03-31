@@ -185,6 +185,11 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = { __typename?: 'Mutation', register?: { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null, user?: { __typename?: 'Tb_user', id: string, username: string, email: string } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } | null };
 
+export type GetallApartmentQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetallApartmentQuery = { __typename?: 'Query', apartments?: Array<{ __typename?: 'Apartment', id: string, name: string, price: number, address: string, floor: string, vacant: boolean, elevator: boolean, rooms: string, year: number, square: string, water: number, balcony: string, park: number, createdAt: any, updatedAt: any }> | null };
+
 export type CheckLoginQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -310,6 +315,54 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const GetallApartmentDocument = gql`
+    query GetallApartment {
+  apartments {
+    id
+    name
+    price
+    address
+    floor
+    vacant
+    elevator
+    rooms
+    year
+    square
+    water
+    balcony
+    park
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useGetallApartmentQuery__
+ *
+ * To run a query within a React component, call `useGetallApartmentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetallApartmentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetallApartmentQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetallApartmentQuery(baseOptions?: Apollo.QueryHookOptions<GetallApartmentQuery, GetallApartmentQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetallApartmentQuery, GetallApartmentQueryVariables>(GetallApartmentDocument, options);
+      }
+export function useGetallApartmentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetallApartmentQuery, GetallApartmentQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetallApartmentQuery, GetallApartmentQueryVariables>(GetallApartmentDocument, options);
+        }
+export type GetallApartmentQueryHookResult = ReturnType<typeof useGetallApartmentQuery>;
+export type GetallApartmentLazyQueryHookResult = ReturnType<typeof useGetallApartmentLazyQuery>;
+export type GetallApartmentQueryResult = Apollo.QueryResult<GetallApartmentQuery, GetallApartmentQueryVariables>;
 export const CheckLoginDocument = gql`
     query CheckLogin {
   checklogin {

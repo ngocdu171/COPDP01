@@ -1,4 +1,5 @@
 require('dotenv').config()
+import { sendEmail } from "./utils/sendEmail";
 import 'reflect-metadata'
 import express from 'express'
 import { ApolloServer } from  'apollo-server-express'
@@ -26,6 +27,8 @@ const main = async () => {
         synchronize: true,
         entities: [Tb_user, Apartment]
     })
+
+    await sendEmail("user01@gmail.com", "Hello user01 asdasdasd")
 
     const app = express()
     app.use(cors({

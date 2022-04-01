@@ -10,6 +10,7 @@ import { COOKIE_NAME } from "../constants";
 import { Tb_user } from "../entities/Users";
 import { ForgotPasswordInput } from "../type/ForgotPasswordInput";
 import { sendEmail } from "../utils/sendEmail";
+import { v4 as uuidv4 } from "uuid";
 
 @Resolver()
 export class UserResolver {
@@ -169,17 +170,17 @@ export class UserResolver {
     });
     if (!userFind) return true;
 
-    const token = "abcdefgh123456789";
+    const resetToken = uuidv4();
     //save token to db
     await new TokenModel({
       userId: `${userFind.id}`,
-      token
+      token: resetToken
     }).save();
 
     //send reset password link to user via email
     await sendEmail(
       forgotPasswordInput.email,
-      `<a href="http://localhost:3000/reset-password?token=${token}">Click here to reset password</a>`
+      `<a href="http://localhost:3000/reset-password?token=${resetToken}">Click here to reset password</a>`
     );
     return true;
   }

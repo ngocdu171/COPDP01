@@ -38,10 +38,10 @@ const main = async () => {
     //Session/Cookie store
     const mongoUrl = `mongodb+srv://${process.env.SESSION_DB_USERNAME_DEV_PROD}:${process.env.SESSION_DB_PASSWORD_DEV_PROD}@cluster0.bhiaf.mongodb.net/sessionsDB?retryWrites=true&w=majority`
     await mongoose.connect(mongoUrl,{
-        useCreateIndex: true,
-        useFindAndModify: false, 
-        useNewUrlParser: true,
-        useUnifiedTopology: true
+        // useCreateIndex: true,
+        // useFindAndModify: false, 
+        // useNewUrlParser: true,
+        // useUnifiedTopology: true
      })
     
     console.log('MongoDB connected');

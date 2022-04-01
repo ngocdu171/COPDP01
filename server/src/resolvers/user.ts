@@ -1,4 +1,5 @@
 import { validateRegisterInput } from "../utils/validateRegisterInput";
+import { TokenModel } from "../models/Token";
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import argon2 from "argon2";
 import { UserMutationResponse } from "../type/UserMutationResponse";
@@ -170,6 +171,11 @@ export class UserResolver {
 
     const token = "abcdefgh123456789";
     //save token to db
+    await new TokenModel({
+      userId: `${userFind.id}`,
+      token
+    }).save();
+
     //send reset password link to user via email
     await sendEmail(
       forgotPasswordInput.email,

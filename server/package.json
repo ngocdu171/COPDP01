@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@typegoose/typegoose": "^9.7.0",
+    "@types/uuid": "^8.3.4",
     "apollo-server-core": "^3.6.4",
     "apollo-server-express": "^3.6.4",
     "argon2": "^0.28.5",
@@ -38,6 +39,7 @@
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.1.1",
-    "typeorm": "0.2.43"
+    "typeorm": "0.2.43",
+    "uuid": "^8.3.2"
   }
 }

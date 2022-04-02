@@ -171,10 +171,12 @@ export class UserResolver {
     if (!userFind) return true;
 
     const resetToken = uuidv4();
+    const hashedResetToken = await argon2.hash(resetToken);
+
     //save token to db
     await new TokenModel({
       userId: `${userFind.id}`,
-      token: resetToken
+      token: hashedResetToken
     }).save();
 
     //send reset password link to user via email

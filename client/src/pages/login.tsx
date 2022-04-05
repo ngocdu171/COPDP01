@@ -110,9 +110,9 @@ const Login = () => {
 
                   <Flex mt={4}>
                     <Box>
-                      <p>
-                        Have already an account?
-                      </p>
+                      <Link href="/forgot-password">
+                        Forgot Password
+                      </Link>
                     </Box>
                     <Spacer />
                     <Box>

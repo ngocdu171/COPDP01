@@ -1,23 +1,30 @@
-import { Button, Center } from '@chakra-ui/react'
+import { Box, Button, Center } from '@chakra-ui/react'
 import { Form, Formik } from 'formik'
 import React from 'react'
 import InputField from '../components/InputField'
 import Wrapper from '../components/Wrapper'
+import { ChangePasswordInput, useChangePasswordMutation } from '../generated/graphql'
 
 const ChangePassword = () => {
     const initialValues = {newPassword: ''}
-
-    const
+    const [changePassword, {loading}] = useChangePasswordMutation();
+    const onChangePasswordSubmit = async (values: ChangePasswordInput) => {
+      // await changePassword({
+      //   variables: {}
+      // })
+    }
   return (
     <Wrapper>
-      <Formik initialValues={initialValues} onSubmit={onForgotPasswordSubmit}>
-        {({ isSubmitting }) => !loading && data ? <Box>Please check your inbox</Box> : (
+      <Formik initialValues={initialValues} onSubmit={onChangePasswordSubmit}>
+        {({ isSubmitting }) => 
+        // !loading && data ? <Box>Please check your inbox</Box> : 
+        (
           <Form>
             <InputField
-              name="email"
-              label="Email"
-              placeholder="Email"
-              type="email"
+              name="newPassword"
+              label="New Password"
+              placeholder="New Password"
+              type="text"
             />
 
             <Center>
@@ -27,7 +34,7 @@ const ChangePassword = () => {
                 mt={4}
                 isLoading={isSubmitting}
               >
-                Send
+                Change Password
               </Button>
             </Center>
           </Form>

@@ -17,6 +17,7 @@ const ForgotPassword = () => {
   const onForgotPasswordSubmit = async (values: ForgotPasswordInput) => {
     await forgotPassword({ variables: { forgotPasswordInput: values } });
   };
+  
   return (
     <Wrapper>
       <Formik initialValues={initialValues} onSubmit={onForgotPasswordSubmit}>

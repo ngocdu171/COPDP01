@@ -1,4 +1,4 @@
-import { Box, Button, Center, Flex } from '@chakra-ui/react'
+import { Box, Button, Center, Flex, Spinner } from '@chakra-ui/react'
 import { Form, Formik, FormikHelpers } from 'formik'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -6,9 +6,11 @@ import React, { useState } from 'react'
 import InputField from '../components/InputField'
 import Wrapper from '../components/Wrapper'
 import { ChangePasswordInput, useChangePasswordMutation } from '../generated/graphql'
+import { useCheckAuth } from '../utils/useCheckAuth'
 
 const ChangePassword = () => {
   const router = useRouter();
+  const {data: authData, loading: authLoading} = useCheckAuth();
   const initialValues = {newPassword: ''}
   const [tokenError, setTokenError] = useState('')
   const [changePassword, {loading}] = useChangePasswordMutation();
@@ -33,6 +35,14 @@ const ChangePassword = () => {
     }
     
   }
+
+  if (authLoading || (!authLoading && authData?.checklogin)) {
+    return (
+      <Flex justifyContent='center' alignItems='center' minH='100vh'>
+        <Spinner />
+      </Flex>
+    )
+  } else
   return (
     <Wrapper>
       <Formik initialValues={initialValues} onSubmit={onChangePasswordSubmit}>

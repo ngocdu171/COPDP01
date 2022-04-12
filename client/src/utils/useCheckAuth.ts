@@ -13,7 +13,8 @@ export const useCheckAuth = () => {
       data?.checklogin &&
       (router.route === "/login" ||
         router.route === "/register" ||
-        router.route === "/forgot-password")
+        router.route === "/forgot-password" ||
+        router.route === "/change-password")
     ) {
       router.replace("/");
     }

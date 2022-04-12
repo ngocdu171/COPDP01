@@ -1,5 +1,6 @@
-import { Box, Button, Center, Flex, Spinner } from '@chakra-ui/react'
+import { Alert, AlertIcon, AlertTitle, Box, Button, Center, Flex, Spinner } from '@chakra-ui/react'
 import { Form, Formik, FormikHelpers } from 'formik'
+import { QueryDocumentKeys } from 'graphql/language/ast'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
@@ -42,41 +43,60 @@ const ChangePassword = () => {
         <Spinner />
       </Flex>
     )
-  } else
-  return (
-    <Wrapper>
-      <Formik initialValues={initialValues} onSubmit={onChangePasswordSubmit}>
-        {({ isSubmitting }) => 
-        // !loading && data ? <Box>Please check your inbox</Box> : 
-        (
-          <Form>
-            <InputField
-              name="newPassword"
-              label="New Password"
-              placeholder="New Password"
-              type="text"
-            />
-            {tokenError && <Flex>
-                <Box color={'red'} mr={2}>
-                  {tokenError}
-                </Box>
-                <Link href='/forgot-password'>Go back to Forgot Password</Link>
-              </Flex>}
-            <Center>
-              <Button
-                type="submit"
-                colorScheme="blue"
-                mt={4}
-                isLoading={isSubmitting}
-              >
-                Change Password
-              </Button>
-            </Center>
-          </Form>
-        )}
-      </Formik>
-    </Wrapper>
-  )
+  } else if (!router.query.token || !router.query.userId) {
+    return (
+      <Wrapper>
+          <Alert status='error'
+            width={'auto'}
+          >
+            <AlertIcon />
+            <AlertTitle>Invalid password change request</AlertTitle>
+          </Alert>
+          <Flex mt={4}>
+            <Box>
+            <Link href="/login">
+              Back to Login
+            </Link>
+            </Box>
+          </Flex>
+      </Wrapper>
+    )
+  } else {
+    return (
+      <Wrapper>
+        <Formik initialValues={initialValues} onSubmit={onChangePasswordSubmit}>
+          {({ isSubmitting }) => 
+          // !loading && data ? <Box>Please check your inbox</Box> : 
+          (
+            <Form>
+              <InputField
+                name="newPassword"
+                label="New Password"
+                placeholder="New Password"
+                type="text"
+              />
+              {tokenError && <Flex>
+                  <Box color={'red'} mr={2}>
+                    {tokenError}
+                  </Box>
+                  <Link href='/forgot-password'>Go back to Forgot Password</Link>
+                </Flex>}
+              <Center>
+                <Button
+                  type="submit"
+                  colorScheme="blue"
+                  mt={4}
+                  isLoading={isSubmitting}
+                >
+                  Change Password
+                </Button>
+              </Center>
+            </Form>
+          )}
+        </Formik>
+      </Wrapper>
+    )
+  }
 }
 
 export default ChangePassword

@@ -195,7 +195,7 @@ export type ChangePasswordMutationVariables = Exact<{
 }>;
 
 
-export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null, user?: { __typename?: 'Tb_user', username: string } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
+export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'UserMutationResponse', code: number, success: boolean, message?: string | null, user?: { __typename?: 'Tb_user', id: string, email: string, username: string, admin: boolean } | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null } };
 
 export type ForgotPasswordMutationVariables = Exact<{
   forgotPasswordInput: ForgotPasswordInput;
@@ -245,7 +245,10 @@ export const ChangePasswordDocument = gql`
     success
     message
     user {
+      id
+      email
       username
+      admin
     }
     errors {
       field

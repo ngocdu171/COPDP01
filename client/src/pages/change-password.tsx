@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import InputField from '../components/InputField'
 import Wrapper from '../components/Wrapper'
-import { ChangePasswordInput, useChangePasswordMutation } from '../generated/graphql'
+import { ChangePasswordInput, CheckLoginDocument, CheckLoginQuery, useChangePasswordMutation } from '../generated/graphql'
 import { useCheckAuth } from '../utils/useCheckAuth'
 
 const ChangePassword = () => {
@@ -23,6 +23,24 @@ const ChangePassword = () => {
           userId: router.query.userId as string,
           token: router.query.token as string,
           changePasswordInput: values
+        }, update(cache, result) {
+          // const checkloginData = cache.readQuery({query: CheckLoginDocument})
+          // console.log('checkloginData: ', checkloginData);
+          console.log('result: ', result.data);
+  
+          if(result.data?.changePassword.success) {
+            cache.writeQuery<CheckLoginQuery>({
+              query: CheckLoginDocument,
+              data: {
+                checklogin: {
+                  id: result.data.changePassword.user?.id,
+                  email: result.data.changePassword.user?.email,
+                  username: result.data.changePassword.user?.username,
+                  admin: result.data.changePassword.user?.admin
+                }
+              }
+            })
+          }
         }
       })
       
@@ -32,10 +50,13 @@ const ChangePassword = () => {
           setTokenError(fieldErrors.message)
         }
         setErrors(fieldErrors)
+      } else if (response.data?.changePassword.success) {
+        router.push('/')
       }
     }
-    
   }
+  
+  
 
   if (authLoading || (!authLoading && authData?.checklogin)) {
     return (
@@ -73,7 +94,7 @@ const ChangePassword = () => {
                 name="newPassword"
                 label="New Password"
                 placeholder="New Password"
-                type="text"
+                type="password"
               />
               {tokenError && <Flex>
                   <Box color={'red'} mr={2}>

@@ -3,9 +3,11 @@ import {
   Button,
   Center,
   Flex,
+  Spacer,
   Spinner
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
+import Link from "next/link";
 import InputField from "../components/InputField";
 import Wrapper from "../components/Wrapper";
 import {
@@ -41,6 +43,14 @@ const ForgotPassword = () => {
                 placeholder="Email"
                 type="email"
               />
+
+              <Flex mt={4}>
+                <Box>
+                  <Link href="/login">
+                    Back to Login
+                  </Link>
+                </Box>
+              </Flex>
 
               <Center>
                 <Button

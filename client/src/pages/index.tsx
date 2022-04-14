@@ -1,3 +1,5 @@
+import { Box, Flex, Heading, Spinner, Stack, Text } from "@chakra-ui/react";
+import Link from "next/link";
 import Navbar from "../components/Navbar";
 import {
   GetallApartmentDocument,
@@ -7,18 +9,31 @@ import { addApolloState, initializeApollo } from "../lib/apolloClient";
 
 const Index = () => {
   const { data, loading } = useGetallApartmentQuery();
+  console.log(data);
+  
 
   return (
     <>
       <Navbar />
       {loading ? (
-        "LOADING..."
-      ) : (
-        <ul>
-          {data?.apartments?.map((apartment) => (
-            <li>{apartment.name}</li>
+        <Flex justifyContent='center' align='center' minH='100vh'>
+          <Spinner />
+        </Flex>
+      ) : ( 
+        <Stack spacing={8}>
+          {data?.apartments?.map(apartment => (
+            <Flex key={apartment.id} p={5} shadow='md' borderWidth='1px'>
+              <Box>
+                <Link href={`/apartment/${apartment.id}`}><Heading fontSize='xl'>{apartment.name}</Heading></Link>
+                <Text>{apartment.address}</Text>
+                <Text>{apartment.price}</Text>
+                <Text>{apartment.floor}</Text>
+                <Text>{apartment.square}</Text>
+                <Text>{apartment.vacant && 'the apartment is vacant'}</Text>
+              </Box>
+            </Flex>
           ))}
-        </ul>
+        </Stack>
       )}
     </>
   );

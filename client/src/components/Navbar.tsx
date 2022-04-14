@@ -38,7 +38,7 @@ const Navbar = () => {
         })
     }
   return (
-    <Box p={5}>
+    <Box p={4}>
         <Flex maxW={800} justifyContent='space-between' align='center' m='auto'>
             <Heading><Link href={'/'}>S_Rent</Link></Heading>
             <Box>

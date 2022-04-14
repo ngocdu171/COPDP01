@@ -66,7 +66,7 @@ const ChangePassword = () => {
     )
   } else if (!router.query.token || !router.query.userId) {
     return (
-      <Wrapper>
+      <Wrapper size='small'>
           <Alert status='error'
             width={'auto'}
           >

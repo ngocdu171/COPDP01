@@ -33,7 +33,7 @@ const ForgotPassword = () => {
     )
   } else
     return (
-      <Wrapper>
+      <Wrapper size="small">
         <Formik initialValues={initialValues} onSubmit={onForgotPasswordSubmit}>
           {({ isSubmitting }) => !loading && data ? <Box>Please check your inbox</Box> : (
             <Form>

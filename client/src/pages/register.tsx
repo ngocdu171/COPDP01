@@ -81,7 +81,7 @@ const Register = () => {
             <Spinner />
           </Flex>
         ) :(
-          <Wrapper>
+          <Wrapper size="small">
           {error && <p>Registered failure. Internal server error</p>}
           <Formik initialValues={initialValues} onSubmit={onRegisterSubmit}>
             {({ values, isSubmitting }) => (

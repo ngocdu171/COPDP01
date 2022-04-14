@@ -1,6 +1,6 @@
 import { Box, Flex, Heading, Spinner, Stack, Text } from "@chakra-ui/react";
 import Link from "next/link";
-import Navbar from "../components/Navbar";
+import Layout from "../components/Layout";
 import {
   GetallApartmentDocument,
   useGetallApartmentQuery,
@@ -9,12 +9,11 @@ import { addApolloState, initializeApollo } from "../lib/apolloClient";
 
 const Index = () => {
   const { data, loading } = useGetallApartmentQuery();
-  console.log(data);
+  // console.log(data);
   
 
   return (
-    <>
-      <Navbar />
+    <Layout>
       {loading ? (
         <Flex justifyContent='center' align='center' minH='100vh'>
           <Spinner />
@@ -35,7 +34,7 @@ const Index = () => {
           ))}
         </Stack>
       )}
-    </>
+    </Layout>
   );
 };
 

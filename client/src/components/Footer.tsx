@@ -4,10 +4,10 @@ import Wrapper from './Wrapper'
 
 const Footer = () => {
   return (
-      <Box bg='blue.800' color='white'>
-        <Wrapper>
-            <Box display='flex' justifyContent='space-between' alignItems='center'>
-                <Box width='200px'>
+      <Box bg='blue.800' color='white' >
+            <Box display='flex' justifyContent='center'>
+                <Box width={1440} height={70} display="flex" justifyContent='space-between' alignItems='center'>
+                <Box>
                     <Heading>Lumo</Heading>
                 </Box>
                 <Box display='flex' justifyContent='space-between' fontSize={15}>
@@ -27,7 +27,7 @@ const Footer = () => {
                     </Box>
                 </Box>
             </Box>
-        </Wrapper>
+        </Box>
     </Box>
   )
 }

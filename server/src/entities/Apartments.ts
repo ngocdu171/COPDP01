@@ -2,7 +2,6 @@ import { Field, ID, ObjectType } from "type-graphql";
 import { BaseEntity, Entity, CreateDateColumn, UpdateDateColumn, Column, PrimaryGeneratedColumn } from "typeorm";
 
 @ObjectType()
-// @Entity()
 @Entity()
 export class Apartment extends BaseEntity {
     @Field(_type => ID)
@@ -58,10 +57,10 @@ export class Apartment extends BaseEntity {
     park: number
 
     @Field()
-    @CreateDateColumn()
+    @CreateDateColumn({type: 'timestamptz'})
     createdAt: Date
 
     @Field()
-    @UpdateDateColumn()
+    @UpdateDateColumn({type: 'timestamptz'})
     updatedAt: Date
 }

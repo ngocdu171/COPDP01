@@ -8,6 +8,7 @@ import {
   Text,
   Wrap,
 } from "@chakra-ui/react";
+import { GetStaticProps } from "next";
 import Link from "next/link";
 import Footer from "../components/Footer";
 import Layout from "../components/Layout";
@@ -183,7 +184,7 @@ const Index = () => {
   );
 };
 
-export const getStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const apolloClient = initializeApollo();
 
   await apolloClient.query({

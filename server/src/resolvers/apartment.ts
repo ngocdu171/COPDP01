@@ -4,13 +4,20 @@ import { Arg, ID, Mutation, Query, Resolver, UseMiddleware } from "type-graphql"
 import { ApartmentMutationResponse } from "../type/ApartmentMutationResponse";
 import { UpdateApartmentInput } from "../type/UpdateApartmentInput";
 import { Apartment } from "../entities/Apartments";
+import { PaginatedApartments } from "../type/PaginatedApartments";
 
 @Resolver()
 export class ApartmentResolver {
-    @Query(_return => [Apartment], {nullable: true})
+    @Query(_return => PaginatedApartments, {nullable: true})
     async apartments() {
         try {
-            return Apartment.find()
+            const apartments = await Apartment.find()
+            return {
+                totalCount: 5,
+                cursor: new Date,
+                hasMore: true,
+                paginatedApartments: apartments
+            }
         } catch (error) {
             console.log(error)
             return null

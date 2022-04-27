@@ -134,16 +134,30 @@ export type MutationUpdateApartmentArgs = {
   updateApartmentInput: UpdateApartmentInput;
 };
 
+export type PaginatedApartments = {
+  __typename?: 'PaginatedApartments';
+  cursor: Scalars['DateTime'];
+  hasMore: Scalars['Boolean'];
+  paginatedApartments: Array<Apartment>;
+  totalCount: Scalars['Float'];
+};
+
 export type Query = {
   __typename?: 'Query';
   apartment?: Maybe<Apartment>;
-  apartments?: Maybe<Array<Apartment>>;
+  apartments?: Maybe<PaginatedApartments>;
   checklogin?: Maybe<Tb_User>;
 };
 
 
 export type QueryApartmentArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryApartmentsArgs = {
+  cursor?: InputMaybe<Scalars['String']>;
+  limit: Scalars['Int'];
 };
 
 export type RegisterInput = {
@@ -230,10 +244,13 @@ export type ApartmentQueryVariables = Exact<{
 
 export type ApartmentQuery = { __typename?: 'Query', apartment?: { __typename?: 'Apartment', id: string, name: string, price: number, address: string, floor: string, vacant: boolean, elevator: boolean, rooms: string, year: number, square: string, water: number, balcony: string, park: number, createdAt: any, updatedAt: any } | null };
 
-export type GetallApartmentQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetallApartmentQueryVariables = Exact<{
+  limit: Scalars['Int'];
+  cursor?: InputMaybe<Scalars['String']>;
+}>;
 
 
-export type GetallApartmentQuery = { __typename?: 'Query', apartments?: Array<{ __typename?: 'Apartment', id: string, name: string, price: number, address: string, floor: string, vacant: boolean, elevator: boolean, rooms: string, year: number, square: string, water: number, balcony: string, park: number, createdAt: any, updatedAt: any }> | null };
+export type GetallApartmentQuery = { __typename?: 'Query', apartments?: { __typename?: 'PaginatedApartments', totalCount: number, cursor: any, hasMore: boolean, paginatedApartments: Array<{ __typename?: 'Apartment', id: string, name: string, price: number, address: string, floor: string, vacant: boolean, elevator: boolean, rooms: string, year: number, square: string, water: number, balcony: string, park: number, createdAt: any, updatedAt: any }> } | null };
 
 export type CheckLoginQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -492,23 +509,28 @@ export type ApartmentQueryHookResult = ReturnType<typeof useApartmentQuery>;
 export type ApartmentLazyQueryHookResult = ReturnType<typeof useApartmentLazyQuery>;
 export type ApartmentQueryResult = Apollo.QueryResult<ApartmentQuery, ApartmentQueryVariables>;
 export const GetallApartmentDocument = gql`
-    query GetallApartment {
-  apartments {
-    id
-    name
-    price
-    address
-    floor
-    vacant
-    elevator
-    rooms
-    year
-    square
-    water
-    balcony
-    park
-    createdAt
-    updatedAt
+    query GetallApartment($limit: Int!, $cursor: String) {
+  apartments(limit: $limit, cursor: $cursor) {
+    totalCount
+    cursor
+    hasMore
+    paginatedApartments {
+      id
+      name
+      price
+      address
+      floor
+      vacant
+      elevator
+      rooms
+      year
+      square
+      water
+      balcony
+      park
+      createdAt
+      updatedAt
+    }
   }
 }
     `;
@@ -525,10 +547,12 @@ export const GetallApartmentDocument = gql`
  * @example
  * const { data, loading, error } = useGetallApartmentQuery({
  *   variables: {
+ *      limit: // value for 'limit'
+ *      cursor: // value for 'cursor'
  *   },
  * });
  */
-export function useGetallApartmentQuery(baseOptions?: Apollo.QueryHookOptions<GetallApartmentQuery, GetallApartmentQueryVariables>) {
+export function useGetallApartmentQuery(baseOptions: Apollo.QueryHookOptions<GetallApartmentQuery, GetallApartmentQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetallApartmentQuery, GetallApartmentQueryVariables>(GetallApartmentDocument, options);
       }

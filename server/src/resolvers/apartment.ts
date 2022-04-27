@@ -24,23 +24,32 @@ export class ApartmentResolver {
   ) {
     try {
       const totalApartmentCount = await Apartment.count();
-      const realLimit = Math.min(10, limit)
+      const realLimit = Math.min(10, limit);
 
-      const findOptions: {[key: string]: any} = {
-          order: {
-              createdAt: 'DESC'
-          },
-          take: realLimit
-      }
+      const findOptions: { [key: string]: any } = {
+        order: {
+          createdAt: "DESC",
+        },
+        take: realLimit,
+      };
 
+      let lastApartment: Apartment[] = [];
       if (cursor) {
-          findOptions.where = {createdAt: LessThan(cursor)}
+        findOptions.where = { createdAt: LessThan(cursor) };
+
+        lastApartment = await Apartment.find({
+          order: { createdAt: "ASC" },
+          take: 1,
+        });
       }
       const apartments = await Apartment.find(findOptions);
       return {
         totalCount: totalApartmentCount,
-        cursor: new Date(),
-        hasMore: true,
+        cursor: apartments[apartments.length - 1].createdAt,
+        hasMore: cursor
+          ? apartments[apartments.length - 1].createdAt.toString() !==
+            lastApartment[0].createdAt.toString()
+          : apartments.length !== totalApartmentCount,
         paginatedApartments: apartments,
       };
     } catch (error) {

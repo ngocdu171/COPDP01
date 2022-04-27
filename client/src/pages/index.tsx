@@ -19,6 +19,8 @@ import {
 } from "../generated/graphql";
 import { addApolloState, initializeApollo } from "../lib/apolloClient";
 
+const limit = 6
+
 const Index = () => {
   const { data, loading } = useGetallApartmentQuery();
   // console.log(data);
@@ -189,6 +191,9 @@ export const getStaticProps: GetStaticProps = async () => {
 
   await apolloClient.query({
     query: GetallApartmentDocument,
+    variables: {
+      limit
+    }
   });
 
   return addApolloState(apolloClient, {

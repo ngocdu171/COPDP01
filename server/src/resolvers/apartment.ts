@@ -36,7 +36,7 @@ export class ApartmentResolver {
       if (cursor) {
           findOptions.where = {createdAt: LessThan(cursor)}
       }
-      const apartments = await Apartment.find();
+      const apartments = await Apartment.find(findOptions);
       return {
         totalCount: totalApartmentCount,
         cursor: new Date(),

@@ -22,7 +22,7 @@ import { addApolloState, initializeApollo } from "../lib/apolloClient";
 const limit = 6
 
 const Index = () => {
-  const { data, loading } = useGetallApartmentQuery();
+  const { data, loading } = useGetallApartmentQuery({variables: {limit}});
   // console.log(data);
 
   const typeOfRooms = (rooms: any) => {
@@ -90,7 +90,7 @@ const Index = () => {
         ) : (
           <Box>
             <Wrap spacing="24px">
-              {data?.apartments?.map((apartment) => (
+              {data?.apartments?.paginatedApartments.map((apartment) => (
                 <Box
                   key={apartment.id}
                   maxW="464px"

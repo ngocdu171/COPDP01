@@ -1,19 +1,24 @@
-query GetallApartment {
-  apartments {
-    id
-    name
-    price
-    address
-    floor
-    vacant
-    elevator
-    rooms
-    year
-    square
-    water
-    balcony
-    park
-    createdAt
-    updatedAt
+query GetallApartment($limit: Int!, $cursor: String) {
+  apartments(limit: $limit, cursor: $cursor) {
+    totalCount
+    cursor
+    hasMore
+    paginatedApartments {
+      id
+      name
+      price
+      address
+      floor
+      vacant
+      elevator
+      rooms
+      year
+      square
+      water
+      balcony
+      park
+      createdAt
+      updatedAt
+    }
   }
 }

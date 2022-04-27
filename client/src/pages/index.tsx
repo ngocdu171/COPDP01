@@ -1,5 +1,7 @@
+import { NetworkStatus } from "@apollo/client";
 import {
   Box,
+  Button,
   Flex,
   Heading,
   Image,
@@ -19,11 +21,19 @@ import {
 } from "../generated/graphql";
 import { addApolloState, initializeApollo } from "../lib/apolloClient";
 
-const limit = 6
+const limit = 3;
 
 const Index = () => {
-  const { data, loading } = useGetallApartmentQuery({variables: {limit}});
+  const { data, loading, error, fetchMore, networkStatus } =
+    useGetallApartmentQuery({
+      variables: { limit },
+      notifyOnNetworkStatusChange: true,
+    });
   // console.log(data);
+
+  const loadingMoreApartments = networkStatus === NetworkStatus.fetchMore
+
+  const LoadMoreApartments = () => fetchMore({variables: {cursor: data?.apartments?.cursor}})
 
   const typeOfRooms = (rooms: any) => {
     let roomType;
@@ -41,12 +51,9 @@ const Index = () => {
     <>
       <Navbar />
 
-      <Box
-        alignItems="center"
-        justifyContent="center"
-      >
-        <Box display='flex' justifyContent='center'>
-          <Box display="flex" width={1440} height='fit-content'>
+      <Box alignItems="center" justifyContent="center">
+        <Box display="flex" justifyContent="center">
+          <Box display="flex" width={1440} height="fit-content">
             <p>
               <Heading>
                 <Text>s_rent</Text>
@@ -78,59 +85,66 @@ const Index = () => {
             </Box>
           </Box>
         </Box>
-          
       </Box>
 
-  <Box bg="blue.100">
-    <Layout>
-        {loading ? (
-          <Flex justifyContent="center" align="center" minH="100vh">
-            <Spinner />
-          </Flex>
-        ) : (
-          <Box>
-            <Wrap spacing="24px">
-              {data?.apartments?.paginatedApartments.map((apartment) => (
-                <Box
-                  key={apartment.id}
-                  maxW="464px"
-                  shadow="md"
-                  borderWidth="1px"
-                  borderRadius="lg"
-                  overflow="hidden"
-                >
-                  <Image src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" />
-                  <Box p={5} bg="white">
-                    <Link href={`/apartment/${apartment.id}`}>
-                      <Heading fontSize="xl">{apartment.name}</Heading>
-                    </Link>
-                    <Text color="gray.500" fontWeight="semibold">
-                      {apartment.address}
-                    </Text>
-                    <Box
-                      display="flex"
-                      justifyContent="space-between"
-                      m="5px 0px 5px 0px"
-                    >
-                      <Text>{apartment.price} €/month</Text>
-                      <Text>{apartment.floor} floor</Text>
-                    </Box>
+      <Box bg="blue.100">
+        <Layout>
+          {loading ? (
+            <Flex justifyContent="center" align="center" minH="100vh">
+              <Spinner />
+            </Flex>
+          ) : (
+            <Box>
+              <Wrap spacing="24px">
+                {data?.apartments?.paginatedApartments.map((apartment) => (
+                  <Box
+                    key={apartment.id}
+                    maxW="464px"
+                    shadow="md"
+                    borderWidth="1px"
+                    borderRadius="lg"
+                    overflow="hidden"
+                  >
+                    <Image src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" />
+                    <Box p={5} bg="white">
+                      <Link href={`/apartment/${apartment.id}`}>
+                        <Heading fontSize="xl">{apartment.name}</Heading>
+                      </Link>
+                      <Text color="gray.500" fontWeight="semibold">
+                        {apartment.address}
+                      </Text>
+                      <Box
+                        display="flex"
+                        justifyContent="space-between"
+                        m="5px 0px 5px 0px"
+                      >
+                        <Text>{apartment.price} €/month</Text>
+                        <Text>{apartment.floor} floor</Text>
+                      </Box>
 
-                    <Box>
-                      <Text>{typeOfRooms(apartment.rooms)} </Text>
-                      <Text>{apartment.square}</Text>
-                    </Box>
+                      <Box>
+                        <Text>{typeOfRooms(apartment.rooms)} </Text>
+                        <Text>{apartment.square}</Text>
+                      </Box>
 
-                    <Text>{apartment.vacant && "the apartment is vacant"}</Text>
+                      <Text>
+                        {apartment.vacant && "the apartment is vacant"}
+                      </Text>
+                    </Box>
                   </Box>
-                </Box>
-              ))}
-            </Wrap>
-          </Box>
+                ))}
+              </Wrap>
+            </Box>
+          )}
+        </Layout>
+
+        {data?.apartments?.hasMore && (
+          <Flex>
+            <Button m='auto' my={8} isLoading={loadingMoreApartments} onClick={LoadMoreApartments}>{loadingMoreApartments ? 'Loading' : 'More'}</Button>
+          </Flex>
         )}
-      </Layout>
-  </Box>
-      
+      </Box>
+
       <Box p={5} mt={3}>
         <Box display="flex" justifyContent="center">
           <Box
@@ -192,8 +206,8 @@ export const getStaticProps: GetStaticProps = async () => {
   await apolloClient.query({
     query: GetallApartmentDocument,
     variables: {
-      limit
-    }
+      limit,
+    },
   });
 
   return addApolloState(apolloClient, {

@@ -20,6 +20,7 @@ import {
   useGetallApartmentQuery,
 } from "../generated/graphql";
 import { addApolloState, initializeApollo } from "../lib/apolloClient";
+import NextLink from 'next/link'
 
 export const limit = 3;
 
@@ -94,7 +95,6 @@ const Index = () => {
               <Spinner />
             </Flex>
           ) : (
-            <Box>
               <Wrap spacing="24px">
                 {data?.apartments?.paginatedApartments.map((apartment) => (
                   <Box
@@ -107,9 +107,11 @@ const Index = () => {
                   >
                     <Image src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" />
                     <Box p={5} bg="white">
-                      <Link href={`/apartment/${apartment.id}`}>
-                        <Heading fontSize="xl">{apartment.name}</Heading>
-                      </Link>
+                      <NextLink href={`/apartment/${apartment.id}`}>
+                        
+                          <Heading fontSize="xl">{apartment.name}</Heading>
+                        
+                      </NextLink>
                       <Text color="gray.500" fontWeight="semibold">
                         {apartment.address}
                       </Text>
@@ -128,13 +130,13 @@ const Index = () => {
                       </Box>
 
                       <Text>
-                        {apartment.vacant && "the apartment is vacant"}
+                        {/* {apartment.vacant && "the apartment is vacant"} */}
+                        {apartment.vacant ? "the apartment is vacant" : "not vacant"}
                       </Text>
                     </Box>
                   </Box>
                 ))}
               </Wrap>
-            </Box>
           )}
         </Layout>
 

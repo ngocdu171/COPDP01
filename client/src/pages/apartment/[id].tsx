@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, AlertTitle, Box, Flex, Heading, Spinner, Image } from "@chakra-ui/react";
+import { Alert, AlertIcon, AlertTitle, Box, Flex, Heading, Spinner, Image, Button, Text } from "@chakra-ui/react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import Footer from "../../components/Footer";
@@ -7,6 +7,7 @@ import Navbar from "../../components/Navbar";
 import { ApartmentDocument, ApartmentIdsDocument, ApartmentIdsQuery, useApartmentQuery, ApartmentQuery } from "../../generated/graphql";
 import { addApolloState, initializeApollo } from "../../lib/apolloClient";
 import {limit} from '../index'
+import NextLink from 'next/link'
 
 const Apartment = () => {
   const router = useRouter();
@@ -16,10 +17,23 @@ const Apartment = () => {
 
   if (error || !data?.apartment)
     return (
-      <Alert status="error" width={"auto"}>
+      <>
+      <Navbar />
+      <Layout>
+        <Alert status="error" width={"auto"}>
         <AlertIcon />
         <AlertTitle>{error ? error.message : 'Apartment not found'}</AlertTitle>
       </Alert>
+      <Box mt={4}>
+        <NextLink href='/'>
+          <Button>Back to Homepage</Button>
+        </NextLink>
+      </Box>
+      
+      </Layout>
+      </>
+      
+      
     );
 
   return (
@@ -36,7 +50,12 @@ const Apartment = () => {
             <Box>
               <Image src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" />
             </Box>
-            <Heading>{data.apartment.name}</Heading>
+            <Box display='flex'>
+              <Heading>{data.apartment.name}</Heading>
+            <Text>{data.apartment.address}</Text>
+            <Text>{data.apartment.year}</Text>
+            </Box>
+            
           </Box>
           </>
         )}

@@ -4,7 +4,8 @@ import { useRouter } from "next/router";
 import Footer from "../../components/Footer";
 import Layout from "../../components/Layout";
 import Navbar from "../../components/Navbar";
-import { useApartmentIdsQuery, useApartmentQuery } from "../../generated/graphql";
+import { ApartmentDocument, ApartmentIdsDocument, ApartmentIdsQuery, useApartmentQuery, ApartmentQuery } from "../../generated/graphql";
+import { addApolloState, initializeApollo } from "../../lib/apolloClient";
 import {limit} from '../index'
 
 const Apartment = () => {
@@ -47,21 +48,26 @@ const Apartment = () => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const {data} = useApartmentIdsQuery({
-    variables: {
-      limit
-    }
-  })
+
+  const apolloClient = initializeApollo()
+
+  const {data} = await apolloClient.query<ApartmentIdsQuery>({ query: ApartmentIdsDocument, variables: { limit } })
+
   return {
-    paths: data?.apartments?.paginatedApartments.map(apartment => (
-      {params: {id: `${apartment.id}`}}
-    )),
+    paths: data.apartments!.paginatedApartments.map(apartment => ({
+      params: { id: `${apartment.id}` }
+    })),
     fallback: 'blocking'
   }
 }
 
-export const getStaticProps: GetStaticProps = async ({params}) = {
-  const {data} - useApartmentQuery({variables: {id: params.id}})
+export const getStaticProps: GetStaticProps< {[key: string]: any}, {id: string} > = async ({params}) => {
+
+  const apolloClient = initializeApollo()
+
+  await apolloClient.query<ApartmentQuery>({ query: ApartmentDocument, variables: {id: params?.id }})
+
+  return addApolloState(apolloClient, { props: {} })
 }
 
 export default Apartment;

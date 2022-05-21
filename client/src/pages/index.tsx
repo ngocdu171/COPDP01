@@ -21,7 +21,7 @@ import {
 } from "../generated/graphql";
 import { addApolloState, initializeApollo } from "../lib/apolloClient";
 
-const limit = 3;
+export const limit = 3;
 
 const Index = () => {
   const { data, loading, error, fetchMore, networkStatus } =

@@ -1,0 +1,7 @@
+query ApartmentIds($limit: Int!, $cursor: String) {
+    apartments(limit: $limit, cursor: $cursor) {
+        paginatedApartments {
+            id
+        }
+    }
+}

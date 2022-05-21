@@ -252,6 +252,14 @@ export type GetallApartmentQueryVariables = Exact<{
 
 export type GetallApartmentQuery = { __typename?: 'Query', apartments?: { __typename?: 'PaginatedApartments', totalCount: number, cursor: any, hasMore: boolean, paginatedApartments: Array<{ __typename?: 'Apartment', id: string, name: string, price: number, address: string, floor: string, vacant: boolean, elevator: boolean, rooms: string, year: number, square: string, water: number, balcony: string, park: number, createdAt: any, updatedAt: any }> } | null };
 
+export type ApartmentIdsQueryVariables = Exact<{
+  limit: Scalars['Int'];
+  cursor?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type ApartmentIdsQuery = { __typename?: 'Query', apartments?: { __typename?: 'PaginatedApartments', paginatedApartments: Array<{ __typename?: 'Apartment', id: string }> } | null };
+
 export type CheckLoginQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -563,6 +571,44 @@ export function useGetallApartmentLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetallApartmentQueryHookResult = ReturnType<typeof useGetallApartmentQuery>;
 export type GetallApartmentLazyQueryHookResult = ReturnType<typeof useGetallApartmentLazyQuery>;
 export type GetallApartmentQueryResult = Apollo.QueryResult<GetallApartmentQuery, GetallApartmentQueryVariables>;
+export const ApartmentIdsDocument = gql`
+    query ApartmentIds($limit: Int!, $cursor: String) {
+  apartments(limit: $limit, cursor: $cursor) {
+    paginatedApartments {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useApartmentIdsQuery__
+ *
+ * To run a query within a React component, call `useApartmentIdsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useApartmentIdsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useApartmentIdsQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      cursor: // value for 'cursor'
+ *   },
+ * });
+ */
+export function useApartmentIdsQuery(baseOptions: Apollo.QueryHookOptions<ApartmentIdsQuery, ApartmentIdsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ApartmentIdsQuery, ApartmentIdsQueryVariables>(ApartmentIdsDocument, options);
+      }
+export function useApartmentIdsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ApartmentIdsQuery, ApartmentIdsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ApartmentIdsQuery, ApartmentIdsQueryVariables>(ApartmentIdsDocument, options);
+        }
+export type ApartmentIdsQueryHookResult = ReturnType<typeof useApartmentIdsQuery>;
+export type ApartmentIdsLazyQueryHookResult = ReturnType<typeof useApartmentIdsLazyQuery>;
+export type ApartmentIdsQueryResult = Apollo.QueryResult<ApartmentIdsQuery, ApartmentIdsQueryVariables>;
 export const CheckLoginDocument = gql`
     query CheckLogin {
   checklogin {
